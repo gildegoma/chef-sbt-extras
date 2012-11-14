@@ -8,7 +8,7 @@ The **default** recipe of this Chef cookbook will:
 
 * Download and install the sbt-extras script (e.g. from a github commit/branch/tag) 
 * Potentially grant some (or even all) users to download/install on demand the required sbt/scala versions.
-* Optionally trigger the installation of some sbt/scala dependencies for specific users (see the 'Optional Attributes Section below)
+* Optionally trigger the installation of some sbt/scala dependencies for specific users (see the *'Optional Attributes'* section below)
 
 Requirements
 ============
@@ -25,7 +25,7 @@ Attributes
 * `node['sbt-extras']['script_name']` - Name of the installed script (default: `sbt`).
 * `node['sbt-extras']['preinstall']['sbt_opts']` - sbt-extras args given during chef provisioning (example: `-mem 256`, to let sbt execute on small-RAM systems)
 * `node['sbt-extras']['owner']` - user owner of installed resources (default: `root`)
-* `node['sbt-extras']['group']` - group owner of installed resources (default: `users`). **Important:** Members of this group are granted to auto-download/setup on demand any missing versions of sbt (the group-sticky-bit is set on `node['sbt-extras']['setup_dir']/.lib`
+* `node['sbt-extras']['group']` - group owner of installed resources (default: `users`). **Important:** Members of this group are granted to auto-download/setup on demand any missing versions of sbt (setgid flag is set on `node['sbt-extras']['setup_dir']/.lib` and download files are ``002` umasked.
 * `node['sbt-extras']['group_new_members']` - Members of `node['sbt-extras']['group']`, *to be appended if the group already exists*.
 
 ## Optional Attributes
@@ -35,9 +35,9 @@ Attributes
 
 ```ruby
 node['sbt-extras']['preinstall']['old_geek']['0.10.1'] = %w{ 2.8.2 2.8.1 }
-node['sbt-extras']['preinstall']['old_geek']['0.11.3'] = %w{ 2.9.2 2.8.2 }`
-node['sbt-extras']['preinstall']['old_geek']['0.12.1'] = %w{ 2.10.0-RC2 2.9.2 2.9.1 2.9.0-1 }`
-node['sbt-extras']['preinstall']['scala_hacker']['0.12.1'] = %w{ 2.10.0-RC2 }`
+node['sbt-extras']['preinstall']['old_geek']['0.11.3'] = %w{ 2.9.2 2.8.2 }
+node['sbt-extras']['preinstall']['old_geek']['0.12.1'] = %w{ 2.10.0-RC2 2.9.2 2.9.1 2.9.0-1 }
+node['sbt-extras']['preinstall']['scala_hacker']['0.12.1'] = %w{ 2.10.0-RC2 }
 ``` 
 
 Installation and Usage
