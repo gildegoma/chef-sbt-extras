@@ -25,7 +25,7 @@ Attributes
 * `node['sbt-extras']['script_name']` - Name of the installed script (default: `sbt`).
 * `node['sbt-extras']['preinstall']['sbt_opts']` - sbt-extras args given during chef provisioning (example: `-mem 256`, to let sbt execute on small-RAM systems)
 * `node['sbt-extras']['owner']` - user owner of installed resources (default: `root`)
-* `node['sbt-extras']['group']` - group owner of installed resources (default: `users`). **Important:** Members of this group are granted to auto-download/setup on demand any missing versions of sbt (setgid flag is set on `node['sbt-extras']['setup_dir']/.lib` and download files are ``002` umasked.
+* `node['sbt-extras']['group']` - group owner of installed resources (default: `sbt`). **Important:** Members of this group are granted to auto-download/setup on demand any missing versions of sbt (setgid flag is set on `node['sbt-extras']['setup_dir']/.lib` and download files are ``002` umasked.
 * `node['sbt-extras']['group_new_members']` - Members of `node['sbt-extras']['group']`, *to be appended if the group already exists*.
 
 ## Optional Attributes
