@@ -14,7 +14,7 @@ default['sbt-extras']['script_name']       = 'sbt'
 default['sbt-extras']['bin_symlink']       = '/usr/bin/sbt'
 default['sbt-extras']['sbt_opts']          = '-mem 256'
 default['sbt-extras']['owner']             = 'root' 
-default['sbt-extras']['group']             = 'users'    # or ask to create a new group (e.g. 'sbt') for power users
+default['sbt-extras']['group']             = 'sbt'      # group members are power users allowed to install sbt versions on demand
 default['sbt-extras']['group_new_members'] = []         # %w{ admin1 coder1 }
 
 # Optional: List of sbt/scala stacks to install (download) during chef provisioning.
