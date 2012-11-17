@@ -21,23 +21,24 @@ Attributes
 
 * `node['sbt-extras']['download_url']` - URL to obtain a specific version of sbt-extras script  
 * `node['sbt-extras']['setup_dir']` - Target directory for installation (default: `/opt/sbt-extras`)
-* `node['sbt-extras']['preinstall']['user_home_basedir']` - base directory where user home folders are stored (example: `/home`)
 * `node['sbt-extras']['script_name']` - Name of the installed script (default: `sbt`).
-* `node['sbt-extras']['preinstall']['sbt_opts']` - sbt-extras args given during chef provisioning (example: `-mem 256`, to let sbt execute on small-RAM systems)
 * `node['sbt-extras']['owner']` - user owner of installed resources (default: `root`)
 * `node['sbt-extras']['group']` - group owner of installed resources (default: `sbt`). **Important:** Members of this group are granted to auto-download/setup on demand any missing versions of sbt (setgid flag is set on `node['sbt-extras']['setup_dir']/.lib` and download files are ``002` umasked.
 * `node['sbt-extras']['group_new_members']` - Members of `node['sbt-extras']['group']`, *to be appended if the group already exists*.
+* `node['sbt-extras']['sbtopts']['mem']` - sbt-extras `-mem <mem>` is used when executing sbt script during chef provisioning. This parameter is also used when installing `/etc/sbt/sbtopts` template
 
 ## Optional Attributes
 
 * `node['sbt-extras']['bin_symlink']` - sbt-extras script will be linked from this location, *only if this attribute is defined!* (enabled by default to: `/usr/bin/sbt`)
-* `node['sbt-extras']['preinstall'][<user_name>][<sbt_version>][<scala_versions]` - Matrix of sbt/scala versions to pre-install during chef provisioning. Examples: 
+* `node['sbt-extras']['sbtopts_filename']` - Template filename of global sbtopts file (default: `'sbtopts'`), The template won't be installed if the filename is an empty string (`''`)
+* `node['sbt-extras']['jvmopts_filename']` - Template filename of global jvmopts file (default: `''`). The template won't be installed if the filename is an empty string (`''`)
+* `node['sbt-extras']['preinstall_matrix'][<user_name>][<sbt_version>][<scala_versions]` - Matrix of sbt/scala versions to pre-install during chef provisioning. Examples: 
 
 ```ruby
-node['sbt-extras']['preinstall']['old_geek']['0.10.1'] = %w{ 2.8.2 2.8.1 }
-node['sbt-extras']['preinstall']['old_geek']['0.11.3'] = %w{ 2.9.2 2.8.2 }
-node['sbt-extras']['preinstall']['old_geek']['0.12.1'] = %w{ 2.10.0-RC2 2.9.2 2.9.1 2.9.0-1 }
-node['sbt-extras']['preinstall']['scala_hacker']['0.12.1'] = %w{ 2.10.0-RC2 }
+node['sbt-extras']['preinstall_matrix']['old_geek']['0.10.1']     = %w{ 2.8.2 2.8.1 }
+node['sbt-extras']['preinstall_matrix']['old_geek']['0.11.3']     = %w{ 2.9.2 2.8.2 }
+node['sbt-extras']['preinstall_matrix']['old_geek']['0.12.1']     = %w{ 2.10.0-RC2 2.9.2 2.9.1 2.9.0-1 }
+node['sbt-extras']['preinstall_matrix']['scala_hacker']['0.12.1'] = %w{ 2.10.0-RC2 }
 ``` 
 
 Installation and Usage
