@@ -19,7 +19,7 @@ default['sbt-extras']['bin_symlink']       = '/usr/bin/sbt'
 default['sbt-extras']['config_dir']        = '/etc/sbt'
 #Template installation is disabled if filename is an empty string: 
 default['sbt-extras']['sbtopts_filename']  = 'sbtopts'
-default['sbt-extras']['jvmopts_filename']  = 'jvmopts'        # disabled, change to 'jvmopts' if wanted.
+default['sbt-extras']['jvmopts_filename']  = ''         # disabled, change to 'jvmopts' if wanted.
 
 
 #TODO Any key-value pair mapped in the form node['sbt-extras']['sbtopts']['x'] will be used in /etc/sbt/sbtopts template
