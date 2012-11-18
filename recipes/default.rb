@@ -99,45 +99,26 @@ if node['sbt-extras']['preinstall_matrix']
   end
   node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
     node['sbt-extras']['preinstall_matrix'][sbt_user].keys.each do |sbt_version|
-
-#FIXME      if node['sbt-extras']['preinstall_matrix'][sbt_user][sbt_version].is_a?(Hash) 
-
+      node['sbt-extras']['preinstall_matrix'][sbt_user][sbt_version].each do |scala_version|
         # Download and pre-install sbt/scala version matrix 
-        node['sbt-extras']['preinstall_matrix'][sbt_user][sbt_version].each do |scala_version|
-          execute "running sbt-extras as user #{sbt_user} to pre-install libraries for building scala #{scala_version} with sbt #{sbt_version}" do
+        execute "running sbt-extras as user #{sbt_user} to pre-install libraries for building scala #{scala_version} with sbt #{sbt_version}" do
 
-            command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-version #{sbt_version} -scala-version #{scala_version} -sbt-create help"
-            user    sbt_user
-            group   node['sbt-extras']['group']
-            umask   '002'   # grant write permission to group.
-            cwd     tmp_dir
-            timeout node['sbt-extras']['preinstall_cmd']['timeout']
+          command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-version #{sbt_version} -scala-version #{scala_version} -sbt-create help"
+          user    sbt_user
+          group   node['sbt-extras']['group']
+          umask   '002'   # grant write permission to group.
+          cwd     tmp_dir
+          timeout node['sbt-extras']['preinstall_cmd']['timeout']
 
-            # Workaround: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
-            environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } ) 
-            #TODO: how to get the true user-home path from system ? 
-            
-            not_if do 
-              File.directory?(File.join(ENV['HOME'], '.sbt', sbt_version, 'boot', "scala-#{scala_version}"))
-            end
+          # Workaround: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
+          environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } ) 
+          #TODO: is there an opscode resource to dynamically get the effective user-home path ? 
+          
+          not_if do 
+            File.directory?(File.join(ENV['HOME'], '.sbt', sbt_version, 'boot', "scala-#{scala_version}"))
           end
         end
-
-#      else if ...   
-#        #TODO No specific scala version required, let's start sbt and fetch default scala version...
-#        execute "Forcing sbt-extras to install sbt #{sbt_version}" do
-#          command "#{script_absolute_path} #{node['sbt-extras']['sbt_opts']} -batch -sbt-version #{sbt_version} -sbt-create help"
-#          user    sbt_user
-#          group   node['sbt-extras']['group']
-#          umask   '002'   # grant write permission to group.
-#          cwd     tmp_dir
-#          timeout node['sbt-extras']['preinstall_cmd']['timeout']
-#          # Workaround: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
-#          environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } ) 
-#          #TODO: how to get the true user-home path from system ?
-#        end
-#      end
-
+      end
     end
   end
   directory tmp_dir do
