@@ -51,7 +51,7 @@ Installation and Usage
 Quality Assurance
 =================
 
-Version 0.1.0 has been _tasted_ by:
+Version 0.2.0 has been _tasted_ by:
 
 * a [foodcritic](http://acrmp.github.com/foodcritic/)
 * Ubuntu 12.10 64-bit, ChefSolo 10.16.2 and java cookbook 1.6.0 (openjdk)
