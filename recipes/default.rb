@@ -76,7 +76,7 @@ if File.directory?(File.join(ENV['HOME'], '.sbt', node['sbt-extras']['default_sb
     mode '0777'
   end
   execute "Forcing sbt-extras to install its default sbt version" do
-    command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-create help"
+    command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-create"
     user    node['sbt-extras']['owner']
     group   node['sbt-extras']['group'] 
     umask   '002' # grant write permission to group.
