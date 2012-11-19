@@ -103,7 +103,7 @@ if node['sbt-extras']['preinstall_matrix']
         # Download and pre-install sbt/scala version matrix 
         execute "running sbt-extras as user #{sbt_user} to pre-install libraries for building scala #{scala_version} with sbt #{sbt_version}" do
 
-          command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-version #{sbt_version} -scala-version #{scala_version} -sbt-create help"
+          command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch '++ #{sbt_version}' -scala-version #{scala_version} -sbt-create"
           user    sbt_user
           group   node['sbt-extras']['group']
           umask   '002'   # grant write permission to group.
