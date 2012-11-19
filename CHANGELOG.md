@@ -1,5 +1,9 @@
 # CHANGELOG for sbt-extras cookbook
 
+## 0.2.2: 
+
+* Fix several errors in user/sbt/scala matrix downloads
+
 ## 0.2.1: *administrative* release
 
 * 0.2.0 re-packaged without unwanted files ('~' backups, .gitignore,...)
