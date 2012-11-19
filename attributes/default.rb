@@ -31,8 +31,4 @@ default['sbt-extras']['sbtopts']['mem']    = 512 # in megabytes, Tuning of JVM -
 default['sbt-extras']['preinstall_cmd']['timeout']              = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific scala version.
 
 # Optionally pre-install requested sbt/scala stacks in user own environment
-#default['sbt-extras']['preinstall_matrix']['coder1']['0.12.1'] = %w{ 2.10.0-RC2 2.9.2 2.8.2 }
-#default['sbt-extras']['preinstall_matrix']['coder1']['0.11.3'] = %w{ 2.9.2 2.9.1 2.9.0-1 2.9.0 }
-#default['sbt-extras']['preinstall_matrix']['coder1']['0.11.2'] = %w{ 2.9.2 2.8.2 }
-#default['sbt-extras']['preinstall_matrix']['coder2']['0.11.2'] = %w{ 2.10.0-RC2 2.9.2 }
-#default['sbt-extras']['preinstall_matrix']['coder2']['0.10.1'] = %w{ 2.8.2 2.8.1 2.8.0 }
+#default['sbt-extras']['preinstall_matrix']['coder1'] = %w{ 0.12.1 0.12.0 0.11.3 0.11.2 0.10.1 }

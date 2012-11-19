@@ -89,39 +89,36 @@ directory tmp_dir do
   recursive true
 end
 
-# Optionally pre-install requested sbt/scala stacks in user own environment
+# Optionally download and pre-install libraries of sbt version-matrix in user own environment
 #TODO: offer a multi-user/system-wide setup variant (e.g. .sbt and .ivy2 shared in a uniqe location, for instance /opt/sbt-extras/.sbt|.ivy2) 
-#TODO: Add -210, -29, -28 support to dynamically install latest versions of major scala releases ?
 if node['sbt-extras']['preinstall_matrix']
   node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
-    node['sbt-extras']['preinstall_matrix'][sbt_user].keys.each do |sbt_version|
-      node['sbt-extras']['preinstall_matrix'][sbt_user][sbt_version].each do |scala_version|
-        directory tmp_dir do
-          # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
-          mode '0777'
-        end
-        # Download and pre-install sbt/scala version matrix 
-        execute "running sbt-extras as user #{sbt_user} to pre-install libraries for building scala #{scala_version} with sbt #{sbt_version}" do
+    node['sbt-extras']['preinstall_matrix'][sbt_user].each do |sbt_version|
+      directory tmp_dir do
+        # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
+        mode '0777'
+      end
+      #  
+      execute "running sbt-extras as user #{sbt_user} to pre-install libraries of sbt #{sbt_version}" do
 
-          command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch '++ #{sbt_version}' -scala-version #{scala_version} -sbt-create"
-          user    sbt_user
-          group   node['sbt-extras']['group']
-          umask   '002'   # grant write permission to group.
-          cwd     tmp_dir
-          timeout node['sbt-extras']['preinstall_cmd']['timeout']
+        command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch '++ #{sbt_version}' -sbt-create"
+        user    sbt_user
+        group   node['sbt-extras']['group']
+        umask   '002'   # grant write permission to group.
+        cwd     tmp_dir
+        timeout node['sbt-extras']['preinstall_cmd']['timeout']
 
-          # Workaround: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
-          environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } ) 
-          #TODO: is there an opscode resource to dynamically get the effective user-home path ? 
-          
-          not_if do 
-            File.directory?(File.join(ENV['HOME'], '.sbt', sbt_version, 'boot', "scala-#{scala_version}"))
-          end
+        # Workaround: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
+        environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } ) 
+        #TODO: is there an opscode resource to dynamically get the effective user-home path ? 
+        
+        not_if do 
+          File.directory?(File.join(ENV['HOME'], '.sbt', sbt_version))
         end
-        directory tmp_dir do
-          action :delete
-          recursive true
-        end
+      end
+      directory tmp_dir do
+        action :delete
+        recursive true
       end
     end
   end
