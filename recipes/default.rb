@@ -93,13 +93,13 @@ end
 #TODO: offer a multi-user/system-wide setup variant (e.g. .sbt and .ivy2 shared in a uniqe location, for instance /opt/sbt-extras/.sbt|.ivy2) 
 #TODO: Add -210, -29, -28 support to dynamically install latest versions of major scala releases ?
 if node['sbt-extras']['preinstall_matrix']
-  directory tmp_dir do
-    # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
-    mode '0777'
-  end
   node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
     node['sbt-extras']['preinstall_matrix'][sbt_user].keys.each do |sbt_version|
       node['sbt-extras']['preinstall_matrix'][sbt_user][sbt_version].each do |scala_version|
+        directory tmp_dir do
+          # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
+          mode '0777'
+        end
         # Download and pre-install sbt/scala version matrix 
         execute "running sbt-extras as user #{sbt_user} to pre-install libraries for building scala #{scala_version} with sbt #{sbt_version}" do
 
@@ -118,11 +118,11 @@ if node['sbt-extras']['preinstall_matrix']
             File.directory?(File.join(ENV['HOME'], '.sbt', sbt_version, 'boot', "scala-#{scala_version}"))
           end
         end
+        directory tmp_dir do
+          action :delete
+          recursive true
+        end
       end
     end
-  end
-  directory tmp_dir do
-      action :delete
-        recursive true
   end
 end
