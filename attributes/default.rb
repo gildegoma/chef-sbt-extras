@@ -21,7 +21,7 @@ default['sbt-extras']['bin_symlink']       = '/usr/bin/sbt'
 default['sbt-extras']['config_dir']        = '/etc/sbt'
 #Template installation is disabled if filename is an empty string: 
 default['sbt-extras']['sbtopts_filename']  = 'sbtopts'
-default['sbt-extras']['jvmopts_filename']  = ''         # disabled, change to 'jvmopts' if wanted.
+default['sbt-extras']['jvmopts_filename']  = ''         # disabled when empty string, change to 'jvmopts' if wanted.
 
 
 #TODO Any key-value pair mapped in the form node['sbt-extras']['sbtopts']['x'] will be used in /etc/sbt/sbtopts template
@@ -32,5 +32,5 @@ default['sbt-extras']['sbtopts']['mem']    = 512 # in megabytes, Tuning of JVM -
 
 default['sbt-extras']['preinstall_cmd']['timeout']              = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific scala version.
 
-# Optionally pre-install requested sbt/scala stacks in user own environment
+# Optionally pre-install dependant libraries of requested sbt versions in user own environment
 #default['sbt-extras']['preinstall_matrix']['coder1'] = %w{ 0.12.1 0.12.0 0.11.3 0.11.2 0.10.1 }
