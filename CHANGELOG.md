@@ -1,5 +1,9 @@
 # CHANGELOG for sbt-extras cookbook
 
+## 0.2.1: *administrative* release
+
+* 0.2.0 re-packaged without unwanted files ('~' backups, .gitignore,...)
+
 ## 0.2.0:
 
 * Enhancement #3 - *Optional* templates for global config files (/etc/sbt/sbtopts and /etc/sbt/jvmopts)
