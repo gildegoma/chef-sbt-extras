@@ -33,4 +33,6 @@ default['sbt-extras']['sbtopts']['mem']    = 512 # in megabytes, Tuning of JVM -
 default['sbt-extras']['preinstall_cmd']['timeout']              = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific scala version.
 
 # Optionally pre-install dependant libraries of requested sbt versions in user own environment
-#default['sbt-extras']['preinstall_matrix']['coder1'] = %w{ 0.12.1 0.12.0 0.11.3 0.11.2 0.10.1 }
+#default['sbt-extras']['preinstall_matrix']['coder1'] = %w{ 0.12.1 0.12.0 0.11.3 0.11.2 0.11.1 }
+  # Known Problem: sbt 'boot' libraries are correclty installed since 0.11+ 
+  # (see https://github.com/gildegoma/chef-sbt-extras/issues/5#issuecomment-10576361)
