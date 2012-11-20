@@ -8,7 +8,7 @@
 include_recipe "java"
 
 script_absolute_path = File.join(node['sbt-extras']['setup_dir'], node['sbt-extras']['script_name'])
-tmp_dir = File.join(Chef::Config[:file_cache_path], 'setup-sbt-extras')
+tmp_project_dir = File.join(Chef::Config[:file_cache_path], 'setup-sbt-extras-tmp-project')
 
 # Create (or modify) the group of sbt-extras power users (allowed to install new versions of sbt)
 group node['sbt-extras']['group'] do
@@ -69,9 +69,9 @@ template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['jvmopts
   end
 end
 
-if File.directory?(File.join(ENV['HOME'], '.sbt', node['sbt-extras']['default_sbt_version'])) 
+unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['sbt-extras']['default_sbt_version'])) 
   # Start sbt, to force download and setup of default sbt-laucher
-  directory tmp_dir do
+  directory tmp_project_dir do
     # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
     mode '0777'
   end
@@ -80,11 +80,11 @@ if File.directory?(File.join(ENV['HOME'], '.sbt', node['sbt-extras']['default_sb
     user    node['sbt-extras']['owner']
     group   node['sbt-extras']['group'] 
     umask   '002' # grant write permission to group.
-    cwd     tmp_dir
+    cwd     tmp_project_dir
     timeout node['sbt-extras']['preinstall_cmd']['timeout']
-    environment ( { 'HOME' => tmp_dir } ) # .sbt/.ivy2 files won't be kept.
+    environment ( { 'HOME' => tmp_project_dir } ) # .sbt/.ivy2 files won't be kept.
   end
-  directory tmp_dir do
+  directory tmp_project_dir do
     action :delete
     recursive true
   end
@@ -95,25 +95,25 @@ end
 if node['sbt-extras']['preinstall_matrix']
   node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
     node['sbt-extras']['preinstall_matrix'][sbt_user].each do |sbt_version|
-      if File.directory?(File.join(node['sbt-extras']['user_home_basedir'], sbt_user, '.sbt', sbt_version)) 
-        directory tmp_dir do
+      unless File.directory?(File.join(node['sbt-extras']['user_home_basedir'], sbt_user, '.sbt', sbt_version)) 
+        directory tmp_project_dir do
           # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
           mode '0777'
         end
         execute "running sbt-extras as user #{sbt_user} to pre-install libraries of sbt #{sbt_version}" do
 
-          command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch '++ #{sbt_version}' -sbt-create"
+          command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-version #{sbt_version} -sbt-create"
           user    sbt_user
           group   node['sbt-extras']['group']
           umask   '002'   # grant write permission to group.
-          cwd     tmp_dir
+          cwd     tmp_project_dir
           timeout node['sbt-extras']['preinstall_cmd']['timeout']
 
           # Workaround: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
           environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } ) 
-          #TODO: is there an opscode resource to dynamically get the effective user-home path ? 
+          #TODO: is there an opscode resource to dynamically get the effective user-home path ?          
         end
-        directory tmp_dir do
+        directory tmp_project_dir do
           action :delete
           recursive true
         end
