@@ -2,7 +2,13 @@
 
 ## 0.2.2: 
 
-* Fix several errors in user/sbt/scala matrix downloads
+### Added:
+
+* #4: default recipe is now 100% idempotent
+
+### Fixed:
+
+* #5: User/SBT pre-installation is now coherent and support 0.12 and 0.11 generations.
 
 ## 0.2.1: *administrative* release
 
