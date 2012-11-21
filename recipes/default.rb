@@ -30,7 +30,6 @@ remote_file script_absolute_path do
   mode   '0755'
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
-  #TODO add checksum validation ?
 end
 
 # Optionally create a symlink (typically to be part of default PATH, example: /usr/bin/sbt)
@@ -41,24 +40,21 @@ link node['sbt-extras']['bin_symlink'] do
   not_if { node['sbt-extras']['bin_symlink'].nil? }
 end
 
+# Install default config files
 directory node['sbt-extras']['config_dir'] do
   owner node['sbt-extras']['owner']
   group node['sbt-extras']['group']
   mode '0755'
 end
-
-# Install default config files
 template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['sbtopts_filename'])  do
   source "sbtopts.erb"
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
   mode   '0664'
   variables(
-    #TODO make it generic... (:arg_x => node['sbt-extras']['sbtopts']['x'], etc)
     :arg_mem => node['sbt-extras']['sbtopts']['mem']
   )
 end
-
 template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['jvmopts_filename']) do
   source "jvmopts.erb"
   owner  node['sbt-extras']['owner']
@@ -69,8 +65,8 @@ template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['jvmopts
   end
 end
 
+# Start sbt, to force download and setup of default sbt-laucher
 unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['sbt-extras']['default_sbt_version'])) 
-  # Start sbt, to force download and setup of default sbt-laucher
   directory tmp_project_dir do
     # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
     mode '0777'
@@ -82,6 +78,7 @@ unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['
     umask   '002' # grant write permission to group.
     cwd     tmp_project_dir
     timeout node['sbt-extras']['preinstall_cmd']['timeout']
+    # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
     environment ( { 'HOME' => tmp_project_dir } ) # .sbt/.ivy2 files won't be kept.
   end
   directory tmp_project_dir do
@@ -91,7 +88,6 @@ unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['
 end
 
 # Optionally download and pre-install libraries of sbt version-matrix in user own environment
-#TODO: offer a multi-user/system-wide setup variant (e.g. .sbt and .ivy2 shared in a uniqe location, for instance /opt/sbt-extras/.sbt|.ivy2) 
 if node['sbt-extras']['preinstall_matrix']
   node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
     node['sbt-extras']['preinstall_matrix'][sbt_user].each do |sbt_version|
@@ -102,6 +98,7 @@ if node['sbt-extras']['preinstall_matrix']
         end
         execute "running sbt-extras as user #{sbt_user} to pre-install libraries of sbt #{sbt_version}" do
 
+          # ATTENTION: current command only supports sbt 0.11+. See Issues #9 and #10.
           command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-version #{sbt_version} -sbt-create"
           user    sbt_user
           group   node['sbt-extras']['group']
@@ -109,9 +106,8 @@ if node['sbt-extras']['preinstall_matrix']
           cwd     tmp_project_dir
           timeout node['sbt-extras']['preinstall_cmd']['timeout']
 
-          # Workaround: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
-          environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } ) 
-          #TODO: is there an opscode resource to dynamically get the effective user-home path ?          
+          # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
+          environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } )          
         end
         directory tmp_project_dir do
           action :delete

@@ -8,7 +8,7 @@ end
 default['sbt-extras']['download_url']      = 'https://github.com/gildegoma/sbt-extras/raw/139803ca3880c20799bca030b33261c4509dc2d5/sbt'
 # Refer to this fork, waiting for https://github.com/paulp/sbt-extras/pull/36 to be accepted and merged into master project.
 default['sbt-extras']['default_sbt_version']   = '0.12.1' # ATTENTION: It must match with effective default sbt of installed script.
-# TODO: ideally, the default sbt version should be 'found' in downloaded script content.
+# Note: ideally, the default sbt version should be 'found' in downloaded script content (see issue #7)
 
 
 default['sbt-extras']['setup_dir']         = '/opt/sbt-extras'
@@ -23,12 +23,8 @@ default['sbt-extras']['config_dir']        = '/etc/sbt'
 default['sbt-extras']['sbtopts_filename']  = 'sbtopts'
 default['sbt-extras']['jvmopts_filename']  = ''         # disabled when empty string, change to 'jvmopts' if wanted.
 
-
-#TODO Any key-value pair mapped in the form node['sbt-extras']['sbtopts']['x'] will be used in /etc/sbt/sbtopts template
+# Following Parameters will be used during recipe execution and aslo used by /etc/sbt/sbtopts template
 default['sbt-extras']['sbtopts']['mem']    = 512 # in megabytes, Tuning of JVM -Xmx and -Xms 
-
-#TODO Same generic loop, but for /etc/sbt/jvmopts
-#default['sbt-extras']['jvmopts']...
 
 default['sbt-extras']['preinstall_cmd']['timeout']              = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific scala version.
 
