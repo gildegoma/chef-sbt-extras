@@ -1,7 +1,7 @@
 maintainer       "Gilles Cornu"
 maintainer_email "git@gilles.cornu.name"
 license          "Apache 2.0"
-description      "Installs sbt-extras to build scala projects with any sbt version you need"
+description      "Installs sbt-extras to ease the building of scala projects"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.2.2"
 

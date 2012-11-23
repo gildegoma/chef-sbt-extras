@@ -60,13 +60,13 @@ template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['jvmopts
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
   mode   '0664'
-  not_if do 
+  not_if do
     node['sbt-extras']['jvmopts_filename'].empty?
   end
 end
 
 # Start sbt, to force download and setup of default sbt-laucher
-unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['sbt-extras']['default_sbt_version'])) 
+unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['sbt-extras']['default_sbt_version']))
   directory tmp_project_dir do
     # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
     mode '0777'
@@ -74,12 +74,12 @@ unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['
   execute "Forcing sbt-extras to install its default sbt version" do
     command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-create"
     user    node['sbt-extras']['owner']
-    group   node['sbt-extras']['group'] 
+    group   node['sbt-extras']['group']
     umask   '002' # grant write permission to group.
     cwd     tmp_project_dir
     timeout node['sbt-extras']['preinstall_cmd']['timeout']
     # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
-    environment ( { 'HOME' => tmp_project_dir } ) # .sbt/.ivy2 files won't be kept.
+    environment ({ 'HOME' => tmp_project_dir }) # .sbt/.ivy2 files won't be kept.
   end
   directory tmp_project_dir do
     action :delete
@@ -91,7 +91,7 @@ end
 if node['sbt-extras']['preinstall_matrix']
   node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
     node['sbt-extras']['preinstall_matrix'][sbt_user].each do |sbt_version|
-      unless File.directory?(File.join(node['sbt-extras']['user_home_basedir'], sbt_user, '.sbt', sbt_version)) 
+      unless File.directory?(File.join(node['sbt-extras']['user_home_basedir'], sbt_user, '.sbt', sbt_version))
         directory tmp_project_dir do
           # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
           mode '0777'
@@ -107,7 +107,7 @@ if node['sbt-extras']['preinstall_matrix']
           timeout node['sbt-extras']['preinstall_cmd']['timeout']
 
           # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
-          environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } )          
+          environment ({ 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) })
         end
         directory tmp_project_dir do
           action :delete
