@@ -50,11 +50,21 @@ Installation and Usage
 Quality Assurance
 -----------------
 
-Cookbook is frequently being _tasted_ by:
+### Continous Integration
 
-* a [foodcritic](http://acrmp.github.com/foodcritic/)
-* Ubuntu 12.10 64-bit, ChefSolo 10.16.2 and java cookbook 1.6.0 (openjdk)
-* CentOS 6.3 64-bit, ChefSolo 10.14.2 and java cookbook 1.6.0 (openjdk)
+This Cookbook is being _tasted_ by Travis CI: [![Build Status](https://secure.travis-ci.org/gildegoma/chef-sbt-extras.png?branch=master)](https://travis-ci.org/gildegoma/chef-sbt-extras)
+
+Automated tests are following:
+  * Static Analysis of Ruby code with [tailor](https://github.com/turboladen/tailor#readme) lint tool
+  * Static Analysis of Chef Cookbooks with [foodcritic](http://acrmp.github.com/foodcritic/) lint tool 
+  * `knife cookbook test` for Ruby Syntax validation of Cookbook files (not sure if more stuff is analyzed than with simple `tailor`)
+  * **WIP:** _ChefSpec_ is on the roadmap...
+
+### Unit Testing
+
+Cookbook is developed with great help of Vagrant. At the moment with following target setups:
+  * Ubuntu 12.10 64-bit, ChefSolo 10.16.2 and latest opscode java cookbook (>= 1.6.0, with openjdk)
+  * CentOS 6.3 64-bit, ChefSolo 10.14.2 and latest opscode java cookbook (>= 1.6.0, with openjdk)
 
 How to Contribute
 -----------------
