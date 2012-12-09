@@ -2,9 +2,10 @@
 
 # needed or not? - require 'json'
 require 'tailor/rake_task'
+require 'rspec/core/rake_task'
 
 task :default => 'test'
-task :test => [:tailor, :foodcritic, :knife]
+task :test => [:tailor, :foodcritic, :knife, :spec]
 
 desc "Runs foodcritic linter"
 task :foodcritic do
@@ -16,6 +17,12 @@ task :foodcritic do
     puts "WARN: foodcritic run is skipped as Ruby #{RUBY_VERSION} is < 1.9.2."
   end
 end
+# Variant 2:
+#task :foodcritic_bis do
+#  FoodCritic::Rake::LintTask.new do |t|
+#    t.options = { :fail_tags => ['any'] }
+#  end
+#end
 
 desc "Runs tailor linter"
 task :tailor do
@@ -36,6 +43,10 @@ task :tailor do
 
     # Template analysis is currently disabled, because I have no clue about how 'ruby -c' could support ERB markers like '<%'
     # task.file_set('templates/**/*.erb', "templates")
+
+    task.file_set('spec/**/*.rb', "chefspec") do |style|
+      style.max_line_length 160, level: :warn
+    end
   end
 end
 
@@ -44,7 +55,7 @@ task :knife do
   Rake::Task[:prepare_sandbox].execute
 
   ENV["BUNDLE_GEMFILE"] = "test/support/Gemfile"
-  sh "bundle exec knife cookbook test cookbook -c #{sandbox_root}/knife.rb"
+  sh "bundle exec knife cookbook test #{cookbook_name} -c #{sandbox_root}/knife.rb"
 end
 
 task :prepare_sandbox do
@@ -61,18 +72,36 @@ task :prepare_sandbox do
     fp.write("cache_type    'BasicFile'\n")
     fp.write("cache_options :path => '#{sandbox_root}/cache'\n")
   end
+
+  # Add fake dependant cookbooks (put only the stuff chefspec will verify)
+  cookbook_deps = %w(java)
+  cookbook_deps.each do |dep|
+    mkdir_p File.join(sandbox_cookbooks, dep, 'recipes')
+    touch File.join(sandbox_cookbooks, dep, %w(recipes default.rb))
+    touch File.join(sandbox_cookbooks, dep, 'README.md')
+  end
 end
 
+RSpec::Core::RakeTask.new
+
 private
+
+def cookbook_name
+  'sbt-extras'
+end
 
 def sandbox_root
   File.join(File.dirname(__FILE__), %w(tmp))
 end
 
+def sandbox_cookbooks
+  File.join(sandbox_root, 'cookbooks')
+end
+
 def sandbox_path
-  File.join(sandbox_root, %w(cookbooks cookbook))
+  File.join(sandbox_cookbooks, cookbook_name)
 end
 
 def knife_rb
-  File.join(sandbox_root, "knife.rb")
+  File.join(sandbox_root, 'knife.rb')
 end
