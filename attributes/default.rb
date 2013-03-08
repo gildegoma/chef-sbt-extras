@@ -5,6 +5,7 @@ else # usual base directory on unix systems:
   set['sbt-extras']['user_home_basedir']   = '/home'
 end
 
+#TODO: change it!!!
 default['sbt-extras']['download_url']      = 'https://github.com/gildegoma/sbt-extras/raw/139803ca3880c20799bca030b33261c4509dc2d5/sbt'
 # Refer to this fork, waiting for https://github.com/paulp/sbt-extras/pull/36 to be accepted and merged into master project.
 default['sbt-extras']['default_sbt_version']   = '0.12.1' # ATTENTION: It must match with effective default sbt of installed script.

@@ -46,14 +46,13 @@ directory node['sbt-extras']['config_dir'] do
   group node['sbt-extras']['group']
   mode '0755'
 end
+#TODO: template or file ?
 template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['sbtopts_filename'])  do
   source "sbtopts.erb"
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
   mode   '0664'
-  variables(
-    :arg_mem => node['sbt-extras']['sbtopts']['mem']
-  )
+  #TODO: not_if ?
 end
 template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['jvmopts_filename']) do
   source "jvmopts.erb"
