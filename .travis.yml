@@ -1,7 +1,6 @@
 language: ruby
-gemfile: test/support/Gemfile
 rvm:
   - 1.9.3
-  - 1.9.2
-#  - 1.8.7 # without 'foodcritic'. Support of Ruby 1.8 is may be not necessary, 
-#          # since recent opscode chef Releases and Cookbooks are only compatible with Ruby 1.9.x
+  - 2.0.0
+bundler_args: --without integration
+

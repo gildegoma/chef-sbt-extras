@@ -1,30 +1,13 @@
 #!/usr/bin/env rake
 
-# needed or not? - require 'json'
+require 'foodcritic'
+require 'rake/testtask'
 require 'tailor/rake_task'
 require 'rspec/core/rake_task'
 
-task :default => 'test'
-task :test => [:tailor, :foodcritic, :knife, :spec]
+task :default => [:tailor, :foodcritic, :knife, :spec]
 
-desc "Runs foodcritic linter"
-task :foodcritic do
-  Rake::Task[:prepare_sandbox].execute
-
-  if Gem::Version.new("1.9.2") <= Gem::Version.new(RUBY_VERSION.dup)
-    sh "foodcritic -f any #{sandbox_path}"
-  else
-    puts "WARN: foodcritic run is skipped as Ruby #{RUBY_VERSION} is < 1.9.2."
-  end
-end
-# Variant 2:
-#task :foodcritic_bis do
-#  FoodCritic::Rake::LintTask.new do |t|
-#    t.options = { :fail_tags => ['any'] }
-#  end
-#end
-
-desc "Runs tailor linter"
+desc "Lint Ruby code"
 task :tailor do
   Tailor::RakeTask.new do |task|
     task.file_set('attributes/**/*.rb', "attributes") do |style|
@@ -41,7 +24,8 @@ task :tailor do
     end
     #task.file_set('resources/**/*.rb', "resources")
 
-    # Template analysis is currently disabled, because I have no clue about how 'ruby -c' could support ERB markers like '<%'
+    # Template analysis is currently disabled,
+    # because I have no idea how 'ruby -c' could support ERB markers like '<%'
     # task.file_set('templates/**/*.erb', "templates")
 
     task.file_set('spec/**/*.rb', "chefspec") do |style|
@@ -50,11 +34,16 @@ task :tailor do
   end
 end
 
-desc "Runs knife cookbook test"
+FoodCritic::Rake::LintTask.new do |t|
+  t.options = { :fail_tags => ['any'], :tags => ['~FC041'] }
+end
+
+RSpec::Core::RakeTask.new
+
+desc "Run knife cookbook test"
 task :knife do
   Rake::Task[:prepare_sandbox].execute
 
-  ENV["BUNDLE_GEMFILE"] = "test/support/Gemfile"
   sh "bundle exec knife cookbook test #{cookbook_name} -c #{sandbox_root}/knife.rb"
 end
 
@@ -74,6 +63,7 @@ task :prepare_sandbox do
   end
 
   # Add fake dependant cookbooks (put only the stuff chefspec will verify)
+  # TODO DRY: read 'depends' from metadata.rb...
   cookbook_deps = %w(java)
   cookbook_deps.each do |dep|
     mkdir_p File.join(sandbox_cookbooks, dep, 'recipes')
@@ -82,7 +72,12 @@ task :prepare_sandbox do
   end
 end
 
-RSpec::Core::RakeTask.new
+begin
+  require 'kitchen/rake_tasks'
+  Kitchen::RakeTasks.new
+rescue LoadError
+  puts ">>>>> Kitchen gem not loaded, omitting tasks" unless ENV['CI']
+end
 
 private
 

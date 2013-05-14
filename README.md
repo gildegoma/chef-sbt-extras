@@ -1,7 +1,8 @@
+
 Description
 -----------
 
-This cookbook will install [sbt-extras](https://github.com/paulp/sbt-extras), an alternative script for running [sbt](https://github.com/harrah/xsbt). sbt-extras works with sbt 0.7.x projects as well as 0.10+. If you're in an sbt project directory, the runner will figure out the versions of sbt and scala required by the project and download them if necessary.
+This cookbook will install [sbt-extras](https://github.com/paulp/sbt-extras), an alternative script for running [sbt](https://github.com/sbt/sbt). sbt-extras works with sbt 0.7.x projects as well as 0.10+. If you're in an sbt project directory, the runner will figure out the versions of sbt and scala required by the project and download them if necessary.
 
 The **default** recipe of this Chef cookbook will:
 
@@ -43,7 +44,7 @@ node['sbt-extras']['preinstall_matrix']['sbt_tester'] = %w{ 0.12.1-RC2 0.12.1-RC
 Installation and Usage
 ----------------------
 
-* Find your favourite way (Librarian-Chef, knife-github-cookbooks, Git submodule, Opscode community API or even tarball download) to install this cookbook (and its dependency). **[Librarian](https://github.com/applicationsonline/librarian#readme) is a very nice cookbook bundler!**
+* Find your favourite way (Berskhelf, Librarian-Chef, knife-github-cookbooks, Git submodule, Opscode community API or even tarball download) to install this cookbook (and its dependency).
 * Include the `sbt-extras::default` recipe to your run list or inside your cookbook.
 * Provision!
 
@@ -54,17 +55,20 @@ Quality Assurance
 
 This Cookbook is being _tasted_ by Travis CI: [![Build Status](https://secure.travis-ci.org/gildegoma/chef-sbt-extras.png?branch=master)](https://travis-ci.org/gildegoma/chef-sbt-extras)
 
-Automated tests are following:
+Automated validations are following:
   * Static Analysis of Ruby code with [tailor](https://github.com/turboladen/tailor#readme) lint tool
   * Static Analysis of Chef Cookbooks with [foodcritic](http://acrmp.github.com/foodcritic/) lint tool 
-  * `knife cookbook test` for Ruby Syntax validation of Cookbook files (not sure if more stuff is analyzed than with simple `tailor`)
-  * **WIP:** _ChefSpec_ is on the roadmap...
+  * `knife cookbook test` in a very basic sandbox
+  * Expectations described with RSpec examples with [ChefSpec](https://github.com/acrmp/chefspec)
+  * _Pending:_ Run true chef (matrix) on travis VM!
 
-### Unit Testing
+_Note:_ Test-Kitchen integration test with a cloud VM is not planned.
 
-Cookbook is developed with great help of Vagrant. At the moment with following target setups:
-  * Ubuntu 12.10 64-bit, ChefSolo 10.16.2 and latest opscode java cookbook (>= 1.6.0, with openjdk)
-  * CentOS 6.3 64-bit, ChefSolo 10.14.2 and latest opscode java cookbook (>= 1.6.0, with openjdk)
+### Development and Testing
+
+During development, this cookbook is locally tested in following environments:
+ * Development with *recent* versions of Chef-Solo (10.x or 11.x) and Ubuntu (with great help of Berkshelf, Vagrant, Virtualbox and Veewee). 
+ * Integration with great help of Opscode [test-kitchen](https://github.com/opscode/test-kitchen) 
 
 How to Contribute
 -----------------
@@ -72,9 +76,7 @@ How to Contribute
 *Feel free to open issues, fork repo and send pull request (based on a custom branch, not master)!*
 
 License
--------
-
-* Copyright:: 2012, Gilles Cornu
+* Copyright:: 2013, Gilles Cornu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
