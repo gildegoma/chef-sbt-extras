@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 shared_examples_for 'any run of default recipe' do
-  it 'creates or modifies the group of power users' # do
-    #chef_run.should create_group chef_run.node['sbt-extras']['group'] 
-    #'create_group' matcher not yet available, waiting for https://github.com/acrmp/chefspec/pull/81
-  # end
 
+  it 'creates or modifies the group of power users' do
+    chef_run.should create_group chef_run.node['sbt-extras']['group']
+  end
 
   it 'creates setup directory to store sbt-extras and related sbt versions' do
     setup_lib_dir = File.join(chef_run.node['sbt-extras']['setup_dir'], '.lib')
@@ -39,8 +38,8 @@ shared_examples_for 'any run of default recipe' do
   end
 
   context 'when user/sbt pre-install matrix is configured' do
-    # TODO: I wonder if it could be a good practice to make some conditional examples this way, 
-    #       or if it is better to alway implement it like below with 'custom attribute' describe group.
+    # TODO: I wonder if it could be a good practice to make some conditional examples this way,
+    #       or if it is better to always implement it like below with 'custom attribute' describe group.
     it 'downloads requested sbt versions and run them in user environment'
   end
 
@@ -77,7 +76,7 @@ describe 'Running sbt-extras::default with custom attributes' do
     chef_run.node.set['sbt-extras']['group_new_members'] = %w{ foo bar }
     chef_run.node.set['sbt-extras']['sbtopts']['mem'] = 2048
     chef_run.node.set['sbt-extras']['setup_dir'] = File.join(%w(usr local sbt-extras))
-    chef_run.node['sbt-extras'].delete('bin_symlink')
+    chef_run.node.default['sbt-extras'].delete('bin_symlink')
     chef_run.node.set['sbt-extras']['jvmopts_filename'] = 'jvmopts'
     chef_run.converge 'sbt-extras::default'
   }
