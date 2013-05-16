@@ -4,15 +4,21 @@ driver_plugin: vagrant
 platforms:
 - name: ubuntu-12.04
   driver_config:
-    box: canonical-ubuntu-12.04
+    box: opscode-ubuntu-12.04
     box_url: http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box
     require_chef_omnibus: true
+    customize:
+      memory:   512
     run_list:
       - recipe[apt]
-- name: centos-6.3
+
+- name: centos-6.4
   driver_config:
-    box: opscode-centos-6.3
-    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.3_chef-11.2.0.box
+    box: opscode-centos-6.4
+    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
+    require_chef_omnibus: true
+    customize:
+      memory:   512
     run_list:
       - recipe[yum]
 
@@ -26,4 +32,10 @@ suites:
       jdk_version: 7
     sbt-extras:
       sbtopts:
-        mem: 128
+        mem: 256
+      owner: vagrant
+      group: vagrant
+      setup_dir: /usr/local/sbt
+      preinstall_matrix:
+        vagrant: ['0.12.3', '0.11.3'] 
+
