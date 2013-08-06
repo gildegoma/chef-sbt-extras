@@ -2,7 +2,7 @@
 Description
 -----------
 
-This cookbook will install [sbt-extras](https://github.com/paulp/sbt-extras), an alternative script for running [sbt](https://github.com/sbt/sbt). sbt-extras works with sbt 0.7.x projects as well as 0.10+. If you're in an sbt project directory, the runner will figure out the versions of sbt and scala required by the project and download them if necessary.
+This cookbook will install [sbt-extras](https://github.com/paulp/sbt-extras), an alternative script for running [sbt (scala build tool)](https://github.com/sbt/sbt). sbt-extras works with sbt 0.7.x projects as well as 0.10+. If you're in an sbt project directory, the runner will figure out the versions of sbt and scala required by the project and download them if necessary.
 
 The **default** recipe of this Chef cookbook will:
 
