@@ -7,7 +7,9 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.3.0"
 
 depends          "java"
-conflicts        "typesafe-stack"
+
+conflicts        "typesafe-stack" # See http://community.opscode.com/cookbooks/typesafe-stack
+conflicts        "chef-sbt"       # See http://community.opscode.com/cookbooks/chef-sbt
 
 %w{ debian ubuntu centos redhat fedora scientific suse amazon freebsd mac_os_x }.each do |os|
   supports os

@@ -34,7 +34,7 @@ shared_examples_for 'any run of default recipe' do
   it 'pre-installs default sbt version' do
     sbt_location   = File.join(chef_run.node['sbt-extras']['setup_dir'], chef_run.node['sbt-extras']['script_name'])
 
-    chef_run.should execute_command "#{sbt_location} -mem #{chef_run.node['sbt-extras']['sbtopts']['mem']} -batch -sbt-create"
+    chef_run.should execute_command "#{sbt_location} -batch -sbt-create"
   end
 
   context 'when user/sbt pre-install matrix is configured' do
@@ -57,16 +57,24 @@ describe 'Running sbt-extras::default with default attributes' do
     chef_run.should create_link '/usr/bin/sbt'
   end
 
-  it 'installs /etc/sbt/sbtopts template' do
+  it 'installs sbtopts template' do
     sbtopts_location = '/etc/sbt/sbtopts'
-    chef_run.should create_file_with_content sbtopts_location, "-mem #{chef_run.node['sbt-extras']['sbtopts']['mem']}\n"
+    #TODO (see issue #18): chef_run.should create_file_with_content sbtopts_location, "-mem #{chef_run.node['sbt-extras']['sbtopts']['mem']}\n"
 
     chef_run.template(sbtopts_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
+
+    # TODO: check if ChefSpec still does not support 'only_if' and 'not_if' clauses
   end
 
-  it 'does not install jvmopts template'  # do
-  #  ChefSpec does not support yet 'only_if' and 'not_if' clauses
-  #end
+  it 'installs jvmopts template' do
+    jvmopts_location = '/etc/sbt/jvmopts'
+    chef_run.should create_file_with_content jvmopts_location, "-Xms#{(2*chef_run.node['sbt-extras']['jvmopts']['total_memory'])/3}M\n"
+    #TODO add more lines
+    chef_run.should create_file_with_content jvmopts_location, "-XX:+CMSClassUnloadingEnabled\n"
+      
+    chef_run.template(jvmopts_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
+    # TODO: check if ChefSpec still does not support 'only_if' and 'not_if' clauses
+  end
 end
 
 describe 'Running sbt-extras::default with custom attributes' do

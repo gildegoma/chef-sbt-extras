@@ -2,22 +2,41 @@
 driver_plugin: vagrant
 
 platforms:
+
 - name: ubuntu-12.04
   driver_config:
     box: canonical-ubuntu-12.04
     box_url: http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box
     require_chef_omnibus: true
+    customize:
+      memory:    1024
     run_list:
       - recipe[apt]
+
 - name: centos-6.3
   driver_config:
     box: opscode-centos-6.3
     box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.3_chef-11.2.0.box
+    customize:
+      memory:    1024
     run_list:
       - recipe[yum]
 
 suites:
+
 - name: default
+  run_list: recipe[sbt-extras]
+
+- name: without_optfiles
+  run_list: recipe[sbt-extras]
+  attributes:
+    sbt-extras:
+      jvmopts:
+        filename: ''  # empty string also means no template to deploy
+      sbtopts:
+        filename: ~   # '~' is parsed as Null value by Ruby YAML library
+
+- name: openjdk7-customized
   run_list:
     - recipe[java::openjdk]
     - recipe[sbt-extras]
@@ -25,5 +44,15 @@ suites:
     java:
       jdk_version: 7
     sbt-extras:
+      group_new_members:    vagrant
+      jvmopts:
+        total_memory:       256
+        thread_stack_size:    3
       sbtopts:
-        mem: 128
+        batch: true #TODO templatify sbtopts, or not?
+      preinstall_matrix: #FIXME does not work anymore with new sbt-extras (.sbt location changed?)
+        vagrant:
+          - "0.13.0-RC4"
+          - "0.12.4"
+          - "0.12.3"
+          - "0.11.2"
