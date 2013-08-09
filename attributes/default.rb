@@ -5,28 +5,35 @@ else # usual base directory on unix systems:
   set['sbt-extras']['user_home_basedir']   = '/home'
 end
 
-default['sbt-extras']['download_url']      = 'https://github.com/gildegoma/sbt-extras/raw/139803ca3880c20799bca030b33261c4509dc2d5/sbt'
-# Refer to this fork, waiting for https://github.com/paulp/sbt-extras/pull/36 to be accepted and merged into master project.
-default['sbt-extras']['default_sbt_version']   = '0.12.1' # ATTENTION: It must match with effective default sbt of installed script.
+default['sbt-extras']['download_url']      = 'https://github.com/paulp/sbt-extras/raw/3d2ef1be2a372d1edda9c5e05cb266f4118ea28b/sbt'
+default['sbt-extras']['default_sbt_version']   = '0.12.4' # ATTENTION: It must match with effective default sbt of installed script.
 # Note: ideally, the default sbt version should be 'found' in downloaded script content (see issue #7)
 
 
 default['sbt-extras']['setup_dir']         = '/opt/sbt-extras'
 default['sbt-extras']['script_name']       = 'sbt'
 default['sbt-extras']['owner']             = 'root'
-default['sbt-extras']['group']             = 'sbt'      # group members are power users allowed to install sbt versions on demand
-default['sbt-extras']['group_new_members'] = []         # %w{ admin1 coder1 }
+default['sbt-extras']['group']             = 'sbt'          # group members are power users allowed to install sbt versions on demand
+default['sbt-extras']['group_new_members'] = []             # %w{ admin1 coder1 }
 default['sbt-extras']['bin_symlink']       = '/usr/bin/sbt'
 
+
+
 default['sbt-extras']['config_dir']        = '/etc/sbt'
-#Template installation is disabled if filename is an empty string:
-default['sbt-extras']['sbtopts_filename']  = 'sbtopts'
-default['sbt-extras']['jvmopts_filename']  = ''         # disabled when empty string, change to 'jvmopts' if wanted.
 
-# Following Parameters will be used during recipe execution and aslo used by /etc/sbt/sbtopts template
-default['sbt-extras']['sbtopts']['mem']    = 512 # in megabytes, Tuning of JVM -Xmx and -Xms
+# Template installation is disabled if attribute below is nil or an empty string:
+default['sbt-extras']['sbtopts']['filename']  = 'sbtopts'
+default['sbt-extras']['jvmopts']['filename']  = 'jvmopts'
 
-default['sbt-extras']['preinstall_cmd']['timeout']              = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific scala version.
+default['sbt-extras']['jvmopts']['total_memory']      = 512        # in megabytes, used to define default JVM settings (like -Xmx, -Xms and so on)
+default['sbt-extras']['jvmopts']['thread_stack_size'] = 6          # in megabytes, used to define default JVM settings (like -Xmx, -Xms and so on)
+
+
+#
+# sbt pre-installation (optional)
+#
+
+default['sbt-extras']['preinstall_cmd']['timeout'] = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific sbt launcher 
 
 # Optionally pre-install dependant libraries of requested sbt versions in user own environment
 #default['sbt-extras']['preinstall_matrix']['coder1'] = %w{ 0.12.1 0.12.0 0.11.3 0.11.2 0.11.1 }
