@@ -11,16 +11,6 @@ script_absolute_path = File.join(node['sbt-extras']['setup_dir'], node['sbt-extr
 tmp_project_dir = File.join(Chef::Config[:file_cache_path], 'setup-sbt-extras-tmp-project')
 
 #
-# Ensure target setup directory exists
-# TODO: should we drop this and assume that target folder creation is not part of cookbook scope?
-#
-directory File.join(node['sbt-extras']['setup_dir']) do
-  recursive true
-  owner node['sbt-extras']['owner']
-  group node['sbt-extras']['group']
-end
-
-#
 # Download sbt-extras script (so far without checksum verification, for easy and lazy updates)
 #
 remote_file script_absolute_path do

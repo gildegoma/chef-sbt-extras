@@ -2,15 +2,6 @@ require 'spec_helper'
 
 shared_examples_for 'any run of default recipe' do
 
-  #TODO could/should we distinguish cases where the directory already exists???
-  it 'creates setup directory to store sbt-extras script' #do
-  #   setup_dir = File.join(chef_run.node['sbt-extras']['setup_dir'])
-  #   chef_run.should create_directory setup_dir
-
-  #   # TODO this is not so good result in case like /usr/bin or /usr/local/bin
-  #   #chef_run.directory(setup_lib_dir).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
-  #end
-
   it 'creates configuration directory to store global settings' do
     config_dir = chef_run.node['sbt-extras']['config_dir']
     chef_run.should create_directory config_dir
