@@ -1,33 +1,25 @@
 case platform
 when 'mac_os_x'
-  set['sbt-extras']['user_home_basedir']   = '/Users'
+  set['sbt-extras']['user_home_basedir']       = '/Users'
 else # usual base directory on unix systems:
-  set['sbt-extras']['user_home_basedir']   = '/home'
+  set['sbt-extras']['user_home_basedir']       = '/home'
 end
 
-default['sbt-extras']['download_url']      = 'https://github.com/paulp/sbt-extras/raw/3d2ef1be2a372d1edda9c5e05cb266f4118ea28b/sbt'
-default['sbt-extras']['default_sbt_version']   = '0.12.4' # ATTENTION: It must match with effective default sbt of installed script.
-# Note: ideally, the default sbt version should be 'found' in downloaded script content (see issue #7)
+default['sbt-extras']['download_url']          = 'https://github.com/paulp/sbt-extras/raw/3d2ef1be2a372d1edda9c5e05cb266f4118ea28b/sbt'
 
+default['sbt-extras']['setup_dir']             = '/usr/local/bin'
+default['sbt-extras']['script_name']           = 'sbt'
+default['sbt-extras']['owner']                 = 'root'
+default['sbt-extras']['group']                 = 'root'
 
-default['sbt-extras']['setup_dir']         = '/opt/sbt-extras'
-default['sbt-extras']['script_name']       = 'sbt'
-default['sbt-extras']['owner']             = 'root'
-default['sbt-extras']['group']             = 'sbt'          # group members are power users allowed to install sbt versions on demand
-default['sbt-extras']['group_new_members'] = []             # %w{ admin1 coder1 }
-default['sbt-extras']['bin_symlink']       = '/usr/bin/sbt'
-
-
-
-default['sbt-extras']['config_dir']        = '/etc/sbt'
+default['sbt-extras']['config_dir']            = '/etc/sbt'
 
 # Template installation is disabled if attribute below is nil or an empty string:
-default['sbt-extras']['sbtopts']['filename']  = 'sbtopts'
-default['sbt-extras']['jvmopts']['filename']  = 'jvmopts'
+default['sbt-extras']['sbtopts']['filename']   = 'sbtopts'
+default['sbt-extras']['jvmopts']['filename']   = 'jvmopts'
 
 default['sbt-extras']['jvmopts']['total_memory']      = 512        # in megabytes, used to define default JVM settings (like -Xmx, -Xms and so on)
 default['sbt-extras']['jvmopts']['thread_stack_size'] = 6          # in megabytes, used to define default JVM settings (like -Xmx, -Xms and so on)
-
 
 #
 # sbt pre-installation (optional)

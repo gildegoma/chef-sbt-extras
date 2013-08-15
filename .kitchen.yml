@@ -44,7 +44,6 @@ suites:
     java:
       jdk_version: 7
     sbt-extras:
-      group_new_members:    vagrant
       jvmopts:
         total_memory:       256
         thread_stack_size:    3
@@ -52,7 +51,7 @@ suites:
         batch: true #TODO templatify sbtopts, or not?
       owner: vagrant
       group: vagrant
-      setup_dir: /usr/local/sbt
+      setup_dir: /home/vagrant/stuff
       preinstall_matrix:
-        vagrant: ['0.13.0-RC4', '0.12.3', '0.11.3'] 
+        vagrant: ['0.13.0-RC4', '0.12.3', '0.11.3']
 

@@ -11,22 +11,17 @@ script_absolute_path = File.join(node['sbt-extras']['setup_dir'], node['sbt-extr
 tmp_project_dir = File.join(Chef::Config[:file_cache_path], 'setup-sbt-extras-tmp-project')
 
 #
-# Create (or modify) the group of sbt-extras power users (allowed to install new versions of sbt)
+# Ensure target setup directory exists
+# TODO: should we drop this and assume that target folder creation is not part of cookbook scope?
 #
-group node['sbt-extras']['group'] do
-  members node['sbt-extras']['group_new_members']
-  append true # add new members, if the group already exists
-end
-
-directory File.join(node['sbt-extras']['setup_dir'], '.lib') do
+directory File.join(node['sbt-extras']['setup_dir']) do
   recursive true
   owner node['sbt-extras']['owner']
   group node['sbt-extras']['group']
-  mode '2775' # enable 'setgid' flag to force group ID inheritance on sub-elements
 end
 
 #
-# Download sbt-extras script
+# Download sbt-extras script (so far without checksum verification, for easy and lazy updates)
 #
 remote_file script_absolute_path do
   source node['sbt-extras']['download_url']
@@ -34,16 +29,6 @@ remote_file script_absolute_path do
   mode   '0755'
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
-end
-
-#
-# Optionally create a symlink (typically to be part of default PATH, example: /usr/bin/sbt)
-#
-link node['sbt-extras']['bin_symlink'] do
-  to     script_absolute_path
-  owner  node['sbt-extras']['owner']
-  group  node['sbt-extras']['group']
-  not_if { node['sbt-extras']['bin_symlink'].nil? }
 end
 
 #
@@ -88,60 +73,30 @@ template "#{File.join('/etc/profile.d', node['sbt-extras']['script_name'])}.sh" 
 end
 
 #
-# Start sbt, to force download and setup of default sbt-laucher
-# TODO: still works???
-#
-unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['sbt-extras']['default_sbt_version']))
-  directory tmp_project_dir do
-    # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
-    mode '0777'
-  end
-  execute "Forcing sbt-extras to install its default sbt version" do
-    command "#{script_absolute_path} -batch -sbt-create"
-    user    node['sbt-extras']['owner']
-    group   node['sbt-extras']['group']
-    umask   '002' # grant write permission to group.
-    cwd     tmp_project_dir
-    timeout node['sbt-extras']['preinstall_cmd']['timeout']
-    # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g. HOME=/root)
-    environment ({ 'HOME' => tmp_project_dir })
-
-    #FIXME why not failing. is return code checked by default?
-  end
-  directory tmp_project_dir do
-    action :delete
-    recursive true
-  end
-end
-
-#
-# Optionally download and pre-install libraries of sbt version-matrix in user own environment
+# Optionally download sbt launchers and pre-install dependencies in user environments
 #
 if node['sbt-extras']['preinstall_matrix']
   node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
     node['sbt-extras']['preinstall_matrix'][sbt_user].each do |sbt_version|
-      unless File.directory?(File.join(node['sbt-extras']['user_home_basedir'], sbt_user, '.sbt', sbt_version))
-        directory tmp_project_dir do
-          # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
-          mode '0777'
-        end
-        execute "running sbt-extras as user #{sbt_user} to pre-install libraries of sbt #{sbt_version}" do
+      directory tmp_project_dir do
+        # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
+        mode '0777'
+      end
+      execute "running sbt-extras as user #{sbt_user} to pre-install libraries of sbt #{sbt_version}" do
 
-          # ATTENTION: current command only supports sbt 0.11+. See Issues #9 and #10.
-          command "#{script_absolute_path} -batch -sbt-create -sbt-version #{sbt_version} "
-          user    sbt_user
-          group   node['sbt-extras']['group']
-          umask   '002'   # grant write permission to group.
-          cwd     tmp_project_dir
-          timeout node['sbt-extras']['preinstall_cmd']['timeout']
+        # ATTENTION: current command only supports sbt 0.11+. See Issues #9 and #10 (won't be fixed).
+        command "#{script_absolute_path} -sbt-create -sbt-version #{sbt_version} "
+        user    sbt_user
+        cwd     tmp_project_dir
+        timeout node['sbt-extras']['preinstall_cmd']['timeout']
 
-          # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g. HOME=/root)
-          environment ({ 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) })
-        end
-        directory tmp_project_dir do
-          action :delete
-          recursive true
-        end
+        # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g. HOME=/root)
+        # TODO: is still the same with chef 11?
+        environment ({ 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) })
+      end
+      directory tmp_project_dir do
+        action :delete
+        recursive true
       end
     end
   end
