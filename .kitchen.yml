@@ -53,5 +53,5 @@ suites:
       group: vagrant
       setup_dir: /home/vagrant/stuff
       preinstall_matrix:
-        vagrant: ['0.13.0-RC4', '0.12.3', '0.11.3']
+        vagrant: ['0.13.0', '0.12.4', '0.11.3', '0.7.7']
 

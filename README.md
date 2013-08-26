@@ -20,10 +20,7 @@ Requirements
 Attributes
 ----------
 
-* `node['sbt-extras']['download_url']` - URL to obtain a specific version of sbt-extras script. 
-  * **Note:** we currently refer to an sbt-extras fork version, in order to get **/etc**-style default config files, which is not (yet) a standard feature. See related [pull request](https://github.com/paulp/sbt-extras/pull/36) ...
-  * `node['sbt-extras']['default_sbt_version']` - non-DRY attribute introduced to improve idempotence of default recipe. Such parameter should always match with the default sbt version of sbt-extra script currently installed.
-* `node['sbt-extras']['setup_dir']` - Target directory for installation (default: `/opt/sbt-extras`)
+* `node['sbt-extras']['download_url']` - URL to obtain a specific version of sbt-extras script.
 * `node['sbt-extras']['script_name']` - Name of the installed script (default: `sbt`).
 * `node['sbt-extras']['bin_symlink']` - (optional) sbt-extras script will be linked from this location, *only if this attribute is defined!* (enabled by default to: `/usr/bin/sbt`)
 * `node['sbt-extras']['owner']` - user owner of installed resources (default: `root`)
