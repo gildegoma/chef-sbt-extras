@@ -34,7 +34,7 @@ suites:
       jvmopts:
         filename: ''  # empty string also means no template to deploy
       sbtopts:
-        filename: ~   # '~' is parsed as Null value by Ruby YAML library
+        filename: ~   # '~' is parsed as Null value
 
 - name: openjdk7-customized
   run_list:
@@ -42,16 +42,19 @@ suites:
     - recipe[sbt-extras]
   attributes:
     java:
-      jdk_version: 7
+      jdk_version: '7'
     sbt-extras:
-      jvmopts:
-        total_memory:       256
-        thread_stack_size:    3
+      script_name: rebel_cut
       sbtopts:
-        batch: true #TODO templatify sbtopts, or not?
+        batch:              true
+        no-colors:          true
+      jvmopts:
+        total_memory:       1024
+        thread_stack_size:     3
       owner: vagrant
       group: vagrant
-      setup_dir: /home/vagrant/stuff
-      preinstall_matrix:
-        vagrant: ['0.13.0', '0.12.4', '0.11.3', '0.7.7']
-
+      setup_dir: /usr/bin
+      user_setup:
+        vagrant:
+          sbt:    ['0.13.0', '0.12.4', '0.11.3']
+          scala:  ['2.10.2', '2.9.3', '2.8.2']

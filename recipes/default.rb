@@ -64,29 +64,34 @@ end
 
 #
 # Optionally download sbt launchers and pre-install dependencies in user environments
+# Note: There is no idempotence condition, since sbt is itself idempotent.
 #
-if node['sbt-extras']['preinstall_matrix']
-  node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
-    node['sbt-extras']['preinstall_matrix'][sbt_user].each do |sbt_version|
-      directory tmp_project_dir do
-        # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
-        mode '0777'
-      end
-      execute "running sbt-extras as user #{sbt_user} to pre-install libraries of sbt #{sbt_version}" do
+if node['sbt-extras']['user_setup']
+  node['sbt-extras']['user_setup'].keys.each do |sbt_user|
+    node['sbt-extras']['user_setup'][sbt_user]['sbt'].each do |sbt_version|
+      node['sbt-extras']['user_setup'][sbt_user]['scala'].each do |scala_version|
+        directory File.join(tmp_project_dir, 'project') do
+          recursive true
+        end
+        # Workaround to new behavior of '-sbt-create' that always considers the project to be based on current sbt release
+        file File.join(tmp_project_dir, 'project', 'build.properties') do
+          content "sbt.version=#{sbt_version}"
+        end
+        execute "running sbt-extras as user #{sbt_user} to pre-install scala #{scala_version} with sbt #{sbt_version}" do
 
-        # ATTENTION: current command only supports sbt 0.11+. See Issues #9 and #10 (won't be fixed).
-        command "#{script_absolute_path} -sbt-create -sbt-version #{sbt_version} "
-        user    sbt_user
-        cwd     tmp_project_dir
-        timeout node['sbt-extras']['preinstall_cmd']['timeout']
+          # ATTENTION: current command only supports sbt 0.11+. See Issues #9 and #10 (won't be fixed).
+          command "#{script_absolute_path} -scala-version #{scala_version} about"
+          user    sbt_user
+          cwd     tmp_project_dir
 
-        # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g. HOME=/root)
-        # TODO: is still the same with chef 11?
-        environment ({ 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) })
-      end
-      directory tmp_project_dir do
-        action :delete
-        recursive true
+          # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g. HOME=/root)
+          # TODO: is it still the same with Chef 11?
+          environment ({ 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) })
+        end
+        directory tmp_project_dir do
+          action :delete
+          recursive true
+        end
       end
     end
   end

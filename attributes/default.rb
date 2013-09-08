@@ -5,7 +5,9 @@ else # usual base directory on unix systems:
   set['sbt-extras']['user_home_basedir']       = '/home'
 end
 
-default['sbt-extras']['download_url']          = 'https://github.com/paulp/sbt-extras/raw/f19a3e4fe1dab69c06e249a2db3cc1934b7bf4b9/sbt'
+default['sbt-extras']['download_url']          = 'https://raw.github.com/gildegoma/sbt-extras/3bdc9716ff5a42b6072d1c90636e883a9f1aae2c/sbt'
+                                                 # https://raw.github.com/paulp/sbt-extras/master/sbt
+                                                 # is stil pending on https://github.com/paulp/sbt-extras/pull/62
 
 default['sbt-extras']['setup_dir']             = '/usr/local/bin'
 default['sbt-extras']['script_name']           = 'sbt'
@@ -14,20 +16,25 @@ default['sbt-extras']['group']                 = 'root'
 
 default['sbt-extras']['config_dir']            = '/etc/sbt'
 
+
+#
 # Template installation is disabled if attribute below is nil or an empty string:
-default['sbt-extras']['sbtopts']['filename']   = 'sbtopts'
-default['sbt-extras']['jvmopts']['filename']   = 'jvmopts'
-
-default['sbt-extras']['jvmopts']['total_memory']      = 512        # in megabytes, used to define default JVM settings (like -Xmx, -Xms and so on)
-default['sbt-extras']['jvmopts']['thread_stack_size'] = 6          # in megabytes, used to define default JVM settings (like -Xmx, -Xms and so on)
-
-#
-# sbt pre-installation (optional)
 #
 
-default['sbt-extras']['preinstall_cmd']['timeout'] = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific sbt launcher 
+default['sbt-extras']['sbtopts']['filename']          = 'sbtopts'
+default['sbt-extras']['sbtopts']['batch']             = false
+default['sbt-extras']['sbtopts']['no-colors']         = false
 
-# Optionally pre-install dependant libraries of requested sbt versions in user own environment
-#default['sbt-extras']['preinstall_matrix']['coder1'] = %w{ 0.12.1 0.12.0 0.11.3 0.11.2 0.11.1 }
-  # Known Problem: sbt 'boot' libraries are correclty installed since 0.11+
-  # (see https://github.com/gildegoma/chef-sbt-extras/issues/5#issuecomment-10576361)
+default['sbt-extras']['jvmopts']['filename']          = 'jvmopts'
+default['sbt-extras']['jvmopts']['total_memory']      = 512       # in megabytes, used to define default JVM settings (like -Xmx, -Xms and so on)
+default['sbt-extras']['jvmopts']['thread_stack_size'] = 6         # in megabytes, used to defined -Xss option
+
+#
+# Optionally pre-install scala/sbt base dependencies in user home (~/.sbt/boot/..., ~/.ivy2/cache/...)
+#
+# Known Problem: sbt 'boot' libraries are correclty installed only since sbt 0.11+
+# see gildegoma/chef-sbt-extras#5 for more details
+#
+# Example:
+# default['sbt-extras']['user_setup']['user1']['sbt'] = %w{ 0.13.0 0.12.4 0.11.3 }
+# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.10.2 2.10.1 2.9.3 2.9.2 2.8.3 }

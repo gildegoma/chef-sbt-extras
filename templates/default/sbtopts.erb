@@ -1,11 +1,25 @@
+
 # ------------------------------------------------ #
 #  The SBT Configuration file.                     #
+#  Run 'sbt -h' to list all available options      #
 # ------------------------------------------------ #
 
+
+# Disable interactive mode
+#
+<% if node['sbt-extras']['sbtopts']['batch'] %>
+-batch
+<% else %>
+#-batch
+<% end %>
 
 # Disable ANSI color codes
 #
+<% if node['sbt-extras']['sbtopts']['no-colors'] %>
+-no-colors
+<% else %>
 #-no-colors
+<% end %>
 
 # Starts sbt even if the current directory contains no sbt project.
 #

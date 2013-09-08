@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 shared_examples_for 'any run of default recipe' do
-
   it 'creates configuration directory to store global settings' do
     config_dir = chef_run.node['sbt-extras']['config_dir']
     chef_run.should create_directory config_dir
@@ -20,26 +19,9 @@ shared_examples_for 'any run of default recipe' do
     #       or if it is better to always implement it like below with 'custom attribute' describe group.
     it 'downloads requested sbt versions and run them in user environment'
   end
-
 end
 
-describe 'Running sbt-extras::default with default attributes' do
-  let(:chef_run) {
-    chef_run = create_chefspec_runner
-    chef_run.converge 'sbt-extras::default'
-  }
-
-  it_behaves_like 'any run of default recipe'
-
-  it 'installs sbtopts template' do
-    sbtopts_location = '/etc/sbt/sbtopts'
-    #TODO (see issue #18): chef_run.should create_file_with_content sbtopts_location, "-mem #{chef_run.node['sbt-extras']['sbtopts']['mem']}\n"
-
-    chef_run.template(sbtopts_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
-
-    # TODO: check if ChefSpec still does not support 'only_if' and 'not_if' clauses
-  end
-
+shared_examples_for 'any jvmopts template installation' do
   it 'installs jvmopts template' do
     jvmopts_location = '/etc/sbt/jvmopts'
     chef_run.should create_file_with_content jvmopts_location, "-Xms#{(2*chef_run.node['sbt-extras']['jvmopts']['total_memory'])/3}M\n"
@@ -51,23 +33,39 @@ describe 'Running sbt-extras::default with default attributes' do
   end
 end
 
-describe 'Running sbt-extras::default with custom attributes' do
+shared_examples_for 'any sbtopts template installation' do
+  it 'installs sbtopts template' do
+    sbtopts_location = '/etc/sbt/sbtopts'
+    chef_run.should create_file_with_content sbtopts_location, "-batch\n"
+    #TODO add more lines
+    chef_run.template(sbtopts_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
+
+    #TODO: check if ChefSpec still does not support 'only_if' and 'not_if' clauses
+  end
+end
+
+describe 'Running sbt-extras::default with default attributes' do
   let(:chef_run) {
     chef_run = create_chefspec_runner
-    chef_run.node.set['sbt-extras']['owner'] = 'toto'
-    chef_run.node.set['sbt-extras']['sbtopts']['mem'] = 2048
-    chef_run.node.set['sbt-extras']['setup_dir'] = File.join(%w(usr local sbt-extras))
-    chef_run.node.set['sbt-extras']['jvmopts_filename'] = 'jvmopts'
     chef_run.converge 'sbt-extras::default'
   }
 
   it_behaves_like 'any run of default recipe'
-
-  it 'installs jvmopts template' do
-    jvmopts_location = File.join(chef_run.node['sbt-extras']['config_dir'], chef_run.node['sbt-extras']['jvmopts_filename'])
-    chef_run.should create_file_with_content jvmopts_location, ''
-    chef_run.template(jvmopts_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
-  end
+  it_behaves_like 'any sbtopts template installation'
+  it_behaves_like 'any jvmopts template installation'
 end
 
-#TODO sbtopts...
+describe 'Running sbt-extras::default with custom attributes' do
+  let(:chef_run) {
+    chef_run = create_chefspec_runner
+    chef_run.node.set['sbt-extras']['owner'] = 'toto'
+    chef_run.node.set['sbt-extras']['sbtopts']['filename'] = ''   # disabled
+    chef_run.node.set['sbt-extras']['setup_dir'] = File.join(%w(usr local sbt-extras))
+    chef_run.converge 'sbt-extras::default'
+  }
+
+  it_behaves_like 'any run of default recipe'
+  it 'does not install sbtopts template'  #pending
+  it_behaves_like 'any jvmopts template installation'
+
+end
