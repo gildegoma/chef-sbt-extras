@@ -38,4 +38,4 @@ default['sbt-extras']['jvmopts']['thread_stack_size'] = 3         # in megabytes
 #
 # Example:
 # default['sbt-extras']['user_setup']['user1']['sbt'] = %w{ 0.13.0 0.12.4 0.11.3 }
-# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.10.2 2.10.1 2.9.3 2.9.2 2.8.3 }
+# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.10.2 2.10.1 2.9.3 2.9.2 }
