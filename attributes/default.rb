@@ -22,6 +22,7 @@ default['sbt-extras']['config_dir']            = '/etc/sbt'
 #
 
 default['sbt-extras']['sbtopts']['filename']          = 'sbtopts'
+default['sbt-extras']['sbtopts']['verbose']           = false
 default['sbt-extras']['sbtopts']['batch']             = false
 default['sbt-extras']['sbtopts']['no-colors']         = false
 

@@ -4,6 +4,13 @@
 #  Run 'sbt -h' to list all available options      #
 # ------------------------------------------------ #
 
+# Enable verbose runner
+#
+<% if node['sbt-extras']['sbtopts']['verbose'] %>
+-v
+<% else %>
+#-v
+<% end %>
 
 # Disable interactive mode
 #
