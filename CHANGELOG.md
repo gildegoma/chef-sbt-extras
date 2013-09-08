@@ -6,14 +6,12 @@
 
 ## 0.3.0
 
-**Major Changes:**
-
-* *The way to refer to global configuration files has changed*, see https://github.com/paulp/sbt-extras/pull/43
-* *Default recipe is far simpler as in 0.2.x!* (no more group sid trick, no more shared libraries between user installations,...)
-* *Preinstallation of sbt and scala boot libraries has been strongly improved*
+* The way to refer to global configuration files has changed, see https://github.com/paulp/sbt-extras/pull/43
+* Default recipe is far simpler as in 0.2.x!* (no more group sid trick, no more shared libraries between user installations,...)
+* Preinstallation of sbt and scala boot libraries has been strongly improved
 
 * #15: Test-Kitchen testing is (partly) supported
-* #17: Ready to integrate with paulp/sbt-extras (but still pending `-batch` bug is fixed there)
+* #17: Ready to integrate with paulp/sbt-extras (but still pending that [`-batch` bug is fixed](https://github.com/paulp/sbt-extras/pull/62))
 * #18: Clean sbtopts and jvmopts templates
 
 ## 0.2.2
