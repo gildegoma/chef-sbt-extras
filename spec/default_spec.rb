@@ -26,7 +26,7 @@ shared_examples_for 'any jvmopts template installation' do
     jvmopts_location = '/etc/sbt/jvmopts'
     chef_run.should create_file_with_content jvmopts_location, "-Xms#{(2*chef_run.node['sbt-extras']['jvmopts']['total_memory'])/3}M\n"
     #TODO add more lines
-    chef_run.should create_file_with_content jvmopts_location, "-XX:+CMSClassUnloadingEnabled\n"
+    chef_run.should create_file_with_content jvmopts_location, "-Xss#{chef_run.node['sbt-extras']['jvmopts']['thread_stack_size']}M\n"
 
     chef_run.template(jvmopts_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
     # TODO: check if ChefSpec still does not support 'only_if' and 'not_if' clauses
