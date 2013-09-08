@@ -35,7 +35,7 @@ template jvmopts_path do
   source 'jvmopts.erb'
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
-  mode   '0664'
+  mode   '0644'
   not_if do jvmopts_path.empty? end
 end
 
@@ -44,7 +44,7 @@ template sbtopts_path do
   source 'sbtopts.erb'
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
-  mode   '0664'
+  mode   '0644'
   not_if do sbtopts_path.empty? end
 end
 
@@ -52,7 +52,7 @@ template "#{File.join('/etc/profile.d', node['sbt-extras']['script_name'])}.sh" 
   source 'profile_sbt.sh.erb'
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
-  mode    '0440'                      # SBT_OPTS and JVM_OPTS environment variables only should be set for sbt users
+  mode   '0640'                      # SBT_OPTS and JVM_OPTS environment variables only should be set for sbt users
   variables({
     :jvmopts => jvmopts_path,
     :sbtopts => sbtopts_path
