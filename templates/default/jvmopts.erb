@@ -3,4 +3,3 @@
 -Xss<%= (node['sbt-extras']['jvmopts']['thread_stack_size']) %>M
 -XX:MaxPermSize=<%= node['sbt-extras']['jvmopts']['total_memory']/6 %>M
 -XX:ReservedCodeCacheSize=<%= node['sbt-extras']['jvmopts']['total_memory']/12 %>M
--XX:+CMSClassUnloadingEnabled
