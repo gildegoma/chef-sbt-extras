@@ -15,4 +15,4 @@ conflicts        "chef-sbt"       # See http://community.opscode.com/cookbooks/c
   supports os
 end
 
-recipe "sbt-extras", "Downloads and installs sbt-extras script"
+recipe "sbt-extras::default", "Downloads and installs sbt-extras script"
