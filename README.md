@@ -27,7 +27,7 @@ Attributes
 * `node['sbt-extras']['config_dir']` - Target directory for global configuration files (default: `/etc/sbt`). The default recipe can potentially install two templates in this directory if their filename attribute is not nil or empty (`''`)
   * `node['sbt-extras']['jvmopts']['filename']` - default jvm arguments can be globally set in this file (default: `jvmopts`)
   * `node['sbt-extras']['sbtopts']['filename']` - default sbt arguments can be globally set in this file (disabled by default)
-* `node['sbt-extras']['user_setup'][<user_name>][<array of sbt versions>]` - (optional) sbt and scala boot dependencies will be preinstalled in `~/.sbt` and `~/.ivy2` directories during chef provisioning. Examples:
+* `node['sbt-extras']['user_setup']['<user_name>']['sbt'][<array of sbt versions>]` and `node['sbt-extras']['user_setup']['<user_name>']['scala'][<array of scala versions>]` - (optional) sbt and scala boot dependencies will be preinstalled in `~/.sbt` and `~/.ivy2` directories during chef provisioning. Examples:
 
 ```ruby
 node['sbt-extras']['user_setup']['scala_lover']['sbt'] = %w{ 0.13.0 0.12.4 0.11.3 }
