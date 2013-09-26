@@ -4,7 +4,7 @@
 
 * [GH-17]: Integrate sbt bash script from paulp/sbt-extras original repository
 
-## 0.3.0
+## 0.3.0 (not released yet)
 
 * The way to refer to global configuration files has changed, see https://github.com/paulp/sbt-extras/pull/43
 * Default recipe is far simpler as in 0.2.x!* (no more group sid trick, no more shared libraries between user installations,...)
