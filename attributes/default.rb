@@ -28,7 +28,7 @@ default['sbt-extras']['sbtopts']['no-colors']         = false
 
 default['sbt-extras']['jvmopts']['filename']          = 'jvmopts'
 default['sbt-extras']['jvmopts']['total_memory']      = 2048      # in megabytes, total memory available for sbt/scala (used to define options like -Xmx, -Xms and so on)
-default['sbt-extras']['jvmopts']['thread_stack_size'] = 3         # in megabytes, used to defined -Xss option
+default['sbt-extras']['jvmopts']['thread_stack_size'] = 3         # in megabytes (used to define -Xss option)
 
 #
 # Optionally pre-install scala/sbt base dependencies in user home (~/.sbt/boot/..., ~/.ivy2/cache/...)
@@ -38,4 +38,4 @@ default['sbt-extras']['jvmopts']['thread_stack_size'] = 3         # in megabytes
 #
 # Example:
 # default['sbt-extras']['user_setup']['user1']['sbt'] = %w{ 0.13.0 0.12.4 0.11.3 }
-# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.10.2 2.10.1 2.9.3 2.9.2 }
+# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.11.0-M5 2.10.3 2.9.3 2.8.2 }
