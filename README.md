@@ -27,7 +27,10 @@ Attributes
 * `node['sbt-extras']['config_dir']` - Target directory for global configuration files (default: `/etc/sbt`). The default recipe can potentially install two templates in this directory if their filename attribute is not nil or empty (`''`)
   * `node['sbt-extras']['system_wide_defaults']` - Whether to export `JVM_OPTS=@...` and `SBT_OPTS=@...` to automatically apply global configuration files (default: `false`)
   * `node['sbt-extras']['jvmopts']['filename']` - default jvm arguments can be globally set in this file (default: `jvmopts`)
+  * `node['sbt-extras']['jvmopts']['thread_stack_size']` - Set the value for `-Xss` in megabytes
+  * `node['sbt-extras']['jvmopts']['total_memory']` - Set the total amount of memory allowed for sbt, so that values like `-Xms` and `-Xmx` can be automatically adapted.
   * `node['sbt-extras']['sbtopts']['filename']` - default sbt arguments can be globally set in this file (disabled by default)
+  * `node['sbt-extras']['sbtopts'][...]` - `sbtopts` values such as `-v`, `-batch` and `-no-colors` can be customized with corresponding cookbook attributes.
 * `node['sbt-extras']['user_setup']['<user_name>']['sbt'][<array of sbt versions>]` and `node['sbt-extras']['user_setup']['<user_name>']['scala'][<array of scala versions>]` - (optional) sbt and scala boot dependencies will be preinstalled in `~/.sbt` and `~/.ivy2` directories during chef provisioning. Examples:
 
 ```ruby
@@ -45,7 +48,7 @@ Installation and Usage
 Quality Assurance
 -----------------
 
-### Continous Integration
+### Continuous Integration
 
 This Cookbook is being _tasted_ by Travis CI: [![Build Status](https://secure.travis-ci.org/gildegoma/chef-sbt-extras.png?branch=master)](https://travis-ci.org/gildegoma/chef-sbt-extras)
 

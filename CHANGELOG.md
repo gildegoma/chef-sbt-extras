@@ -1,17 +1,13 @@
 # CHANGELOG for sbt-extras cookbook
 
-## 0.x.y (not released yet)
-
-* [GH-17]: Integrate sbt bash script from paulp/sbt-extras original repository
-
-## 0.3.0 (not released yet)
+## 0.3.0 (not release yet)
 
 * The way to refer to global configuration files has changed, see https://github.com/paulp/sbt-extras/pull/43
-* Default recipe is far simpler as in 0.2.x!* (no more group sid trick, no more shared libraries between user installations,...)
+* Default recipe is far simpler as in 0.2.x! (no more group sid trick, no more shared libraries between user installations,...)
 * Preinstallation of sbt and scala boot libraries has been strongly improved
 
+* [GH-17]: Integrate sbt bash script from paulp/sbt-extras original repository
 * [GH-15]: Test-Kitchen testing is (partly) supported
-* [GH-17]: Ready to integrate with paulp/sbt-extras (but still pending that [`-batch` bug is fixed](https://github.com/paulp/sbt-extras/pull/62))
 * [GH-18]: Clean sbtopts and jvmopts templates
 
 ## 0.2.2
