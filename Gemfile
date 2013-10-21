@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rake'
 gem 'tailor'
-gem 'chefspec', '>= 1.3.0'
+gem 'chefspec', '~> 2.0.1'
 gem 'foodcritic', '>= 2.2.0'
 
 # TODO go for chef 11...
