@@ -1,6 +1,6 @@
 language: ruby
 rvm:
   - 1.9.3
-#  - 2.0.0, disabled because of https://github.com/gildegoma/chef-sbt-extras/issues/19
+  - 2.0.0
 bundler_args: --without integration
 
