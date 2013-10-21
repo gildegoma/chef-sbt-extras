@@ -28,6 +28,9 @@ default['sbt-extras']['jvmopts']['filename']          = 'jvmopts'
 default['sbt-extras']['jvmopts']['total_memory']      = 2048      # in megabytes, total memory available for sbt/scala (used to define options like -Xmx, -Xms and so on)
 default['sbt-extras']['jvmopts']['thread_stack_size'] = 3         # in megabytes (used to define -Xss option)
 
+default['sbt-extras']['system_wide_defaults']         = false     # if enabled, SBT_OPTS and JVM_OPTS will be exported via /etc/profile.d mechanism.
+                                                                  # Be aware that JVM_OPTS can conflict with other Java-based software.
+
 #
 # Optionally pre-install scala/sbt base dependencies in user home (~/.sbt/boot/..., ~/.ivy2/cache/...)
 #
