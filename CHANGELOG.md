@@ -2,6 +2,14 @@
 
 ## 0.4.0 (not released yet)
 
+* Integrate newer version of paulp/sbt-extras script, which solves following issues:
+  - Older launchers are used if the version is declared in `build.properties`
+    (see https://github.com/paulp/sbt-extras/pull/67#issuecomment-35973278)
+  - Fix a bug in `-sbt-create`, to use `-sbt-version` option.
+    The `build.properties` workaround introduced in 0.3.0 could then be removed.
+  - Fix a bug in comment skipping for lines with a non-initial #
+    (see https://github.com/paulp/sbt-extras/pull/69)
+
 * Update to ChefSpec 3.4
 * Update to Foodcritic 3.0
 

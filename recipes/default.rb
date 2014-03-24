@@ -74,15 +74,10 @@ if node['sbt-extras']['user_setup']
           recursive true
           owner     sbt_user
         end
-        # Workaround to new behavior of '-sbt-create' that always considers the project to be based on current sbt release
-        file File.join(tmp_project_dir, 'project', 'build.properties') do
-          content "sbt.version=#{sbt_version}"
-          owner   sbt_user
-        end
         execute "running sbt-extras as user #{sbt_user} to pre-install scala #{scala_version} with sbt #{sbt_version}" do
 
-          # ATTENTION: current command only supports sbt 0.11+. See Issues #9 and #10 (won't be fixed).
-          command "#{script_absolute_path} -scala-version #{scala_version} about"
+          # ATTENTION: current command only supports sbt 0.11+ (this limitation won't be fixed).
+          command "#{script_absolute_path} -sbt-create -sbt-version #{sbt_version} -scala-version #{scala_version} about"
           user    sbt_user
           cwd     tmp_project_dir
 

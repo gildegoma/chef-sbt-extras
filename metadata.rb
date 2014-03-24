@@ -4,7 +4,7 @@ maintainer_email "foss@gilles.cornu.name"
 license          "Apache 2.0"
 description      "Installs sbt-extras to ease the building of scala projects"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.3.0"
+version          "0.4.0"
 
 depends          "java"
 
