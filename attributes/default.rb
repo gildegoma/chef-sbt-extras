@@ -38,5 +38,5 @@ default['sbt-extras']['system_wide_defaults']         = false     # if enabled, 
 # see gildegoma/chef-sbt-extras#5 for more details
 #
 # Example:
-# default['sbt-extras']['user_setup']['user1']['sbt'] = %w{ 0.13.0 0.12.4 0.11.3 }
-# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.11.0-M5 2.10.3 2.9.3 2.8.2 }
+# default['sbt-extras']['user_setup']['user1']['sbt'] = %w{ 0.13.1 0.12.4 0.11.3 }
+# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.11.0-RC3 2.10.3 2.9.3 2.8.2 }
