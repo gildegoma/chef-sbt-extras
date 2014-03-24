@@ -4,14 +4,16 @@ shared_examples_for 'any run of default recipe' do
   it 'creates configuration directory to store global settings' do
     config_dir = chef_run.node['sbt-extras']['config_dir']
     chef_run.should create_directory config_dir
-    chef_run.directory(config_dir).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
+    expect(chef_run.directory(config_dir).owner).to eq(chef_run.node['sbt-extras']['owner'])
+    expect(chef_run.directory(config_dir).group).to eq(chef_run.node['sbt-extras']['group'])
   end
 
   it 'downloads and installs sbt-extras script file' do
     sbt_location = File.join(chef_run.node['sbt-extras']['setup_dir'], chef_run.node['sbt-extras']['script_name'])
 
     chef_run.should create_remote_file sbt_location
-    chef_run.remote_file(sbt_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
+    expect(chef_run.remote_file(sbt_location).owner).to eq(chef_run.node['sbt-extras']['owner'])
+    expect(chef_run.remote_file(sbt_location).group).to eq(chef_run.node['sbt-extras']['group'])
   end
 
   context 'when user/sbt pre-install matrix is configured' do
@@ -24,11 +26,12 @@ end
 shared_examples_for 'any jvmopts template installation' do
   it 'installs jvmopts template' do
     jvmopts_location = '/etc/sbt/jvmopts'
-    chef_run.should create_file_with_content jvmopts_location, "-Xms#{(2*chef_run.node['sbt-extras']['jvmopts']['total_memory'])/3}M\n"
+    chef_run.should render_file(jvmopts_location).with_content("-Xms#{(2*chef_run.node['sbt-extras']['jvmopts']['total_memory'])/3}M\n")
     #TODO add more lines
-    chef_run.should create_file_with_content jvmopts_location, "-Xss#{chef_run.node['sbt-extras']['jvmopts']['thread_stack_size']}M\n"
+    chef_run.should render_file(jvmopts_location).with_content("-Xss#{chef_run.node['sbt-extras']['jvmopts']['thread_stack_size']}M\n")
 
-    chef_run.template(jvmopts_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
+    expect(chef_run.template(jvmopts_location).owner).to eq(chef_run.node['sbt-extras']['owner'])
+    expect(chef_run.template(jvmopts_location).group).to eq(chef_run.node['sbt-extras']['group'])
     # TODO: check if ChefSpec still does not support 'only_if' and 'not_if' clauses
   end
 end
@@ -36,9 +39,10 @@ end
 shared_examples_for 'any sbtopts template installation' do
   it 'installs sbtopts template' do
     sbtopts_location = '/etc/sbt/sbtopts'
-    chef_run.should create_file_with_content sbtopts_location, "-batch\n"
+    chef_run.should render_file("/etc/sbt/sbtopts").with_content("-batch\n")
     #TODO add more lines
-    chef_run.template(sbtopts_location).should be_owned_by(chef_run.node['sbt-extras']['owner'], chef_run.node['sbt-extras']['group'])
+    expect(chef_run.template(sbtopts_location).owner).to eq(chef_run.node['sbt-extras']['owner'])
+    expect(chef_run.template(sbtopts_location).group).to eq(chef_run.node['sbt-extras']['group'])
 
     #TODO: check if ChefSpec still does not support 'only_if' and 'not_if' clauses
   end

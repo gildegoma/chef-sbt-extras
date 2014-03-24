@@ -1,6 +1,11 @@
 # CHANGELOG for sbt-extras cookbook
 
-## 0.3.0 (not release yet)
+## 0.4.0 (not released yet)
+
+* Update to ChefSpec 3.4
+* Update to Foodcritic 3.0
+
+## 0.3.0 (never officially released)
 
 * The way to refer to global configuration files has changed, see https://github.com/paulp/sbt-extras/pull/43
 * Default recipe is far simpler as in 0.2.x! (no more group sid trick, no more shared libraries between user installations,...)
