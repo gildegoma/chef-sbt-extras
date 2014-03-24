@@ -9,6 +9,7 @@
     The `build.properties` workaround introduced in 0.3.0 could then be removed.
   - Fix a bug in comment skipping for lines with a non-initial #
     (see https://github.com/paulp/sbt-extras/pull/69)
+* The attribute `system_wide_defaults` introduced in 0.3.0 was missing in recipe.rb of master repository
 
 * Update to ChefSpec 3.4
 * Update to Foodcritic 3.0
