@@ -9,8 +9,10 @@ gem 'foodcritic', '>= 3.0'
 gem 'chef', (ENV['CHEF_VERSION'] || '>= 11')
 
 group :integration do
-  gem 'berkshelf', '~> 1.4.6' # TODO try to run against 2.0.x or even 3.0.x ?
-  gem 'test-kitchen', '~> 1.0.0.beta.2'
-  gem 'kitchen-vagrant', '~> 0.11.0'
+  gem 'berkshelf', '~> 2.0' 
+  gem 'test-kitchen', '~> 1.2'
+  gem 'kitchen-vagrant', :git => 'https://github.com/test-kitchen/kitchen-vagrant.git',
+                         :ref => '63f9eef9ac46fc372c117b3d8672088b8df35659' 
+                         # waiting for '~> 0.16.0' (https://github.com/test-kitchen/kitchen-vagrant/pull/122Â§)
 end
 

@@ -13,6 +13,7 @@
 
 * Update to ChefSpec 4.1
 * Update to Foodcritic 3.0
+* Update to Test-Kitchen 1.2
 
 ## 0.3.0 (never officially released)
 

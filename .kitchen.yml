@@ -3,20 +3,28 @@ driver_plugin: vagrant
 
 platforms:
 
-- name: ubuntu-12.04
+- name: ubuntu-14.04
   driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box
+#    box: chef/ubuntu-14.04
+    box: ubuntu/trusty64
     require_chef_omnibus: true
     customize:
       memory:    1024
     run_list:
       - recipe[apt]
 
-- name: centos-6.3
+- name: ubuntu-12.04
   driver_config:
-    box: opscode-centos-6.3
-    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.3_chef-11.2.0.box
+    box: ubuntu/precise64
+    require_chef_omnibus: true
+    customize:
+      memory:    1024
+    run_list:
+      - recipe[apt]
+
+- name: centos-7.0
+  driver_config:
+    box: chef/centos-7.0
     customize:
       memory:    1024
     run_list:
@@ -56,5 +64,5 @@ suites:
       setup_dir: /usr/bin
       user_setup:
         vagrant:
-          sbt:    ['0.13.0', '0.12.4', '0.11.3']
-          scala:  ['2.10.2', '2.9.3', '2.8.2']
+          sbt:    ['0.13.6', '0.12.4', '0.11.3']
+          scala:  ['2.11.4', '2.10.4', '2.9.3']
