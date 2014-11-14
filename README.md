@@ -34,8 +34,8 @@ Attributes
 * `node['sbt-extras']['user_setup']['<user_name>']['sbt'][<array of sbt versions>]` and `node['sbt-extras']['user_setup']['<user_name>']['scala'][<array of scala versions>]` - (optional) sbt and scala boot dependencies will be preinstalled in `~/.sbt` and `~/.ivy2` directories during chef provisioning. Examples:
 
 ```ruby
-node['sbt-extras']['user_setup']['scala_lover']['sbt'] = %w{ 0.13.0 0.12.4 0.11.3 }
-node['sbt-extras']['user_setup']['scala_lover']['scala'] = %w{ 2.10.2 2.10.1 2.9.3 2.9.2 2.8.3 }
+node['sbt-extras']['user_setup']['scala_lover']['sbt'] = %w{ 0.13.6 0.12.4 }
+node['sbt-extras']['user_setup']['scala_lover']['scala'] = %w{ 2.11.4 2.10.4 2.9.3 }
 ```
 
 Installation and Usage
