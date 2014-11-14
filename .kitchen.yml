@@ -10,8 +10,8 @@ platforms:
     require_chef_omnibus: true
     customize:
       memory:    1024
-    run_list:
-      - recipe[apt]
+  run_list:
+    - recipe[apt]
 
 - name: ubuntu-12.04
   driver_config:
@@ -19,16 +19,16 @@ platforms:
     require_chef_omnibus: true
     customize:
       memory:    1024
-    run_list:
-      - recipe[apt]
+  run_list:
+    - recipe[apt]
 
 - name: centos-7.0
   driver_config:
     box: chef/centos-7.0
     customize:
       memory:    1024
-    run_list:
-      - recipe[yum]
+  run_list:
+    - recipe[yum]
 
 suites:
 
