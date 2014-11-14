@@ -11,7 +11,7 @@
     (see https://github.com/paulp/sbt-extras/pull/69)
 * The attribute `system_wide_defaults` introduced in 0.3.0 was missing in recipe.rb of master repository
 
-* Update to ChefSpec 3.4
+* Update to ChefSpec 4.1
 * Update to Foodcritic 3.0
 
 ## 0.3.0 (never officially released)

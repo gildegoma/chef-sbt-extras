@@ -4,7 +4,7 @@ require 'chefspec/deprecations'
 
 module SbtExtrasChefSpecHelpers
   def create_chefspec_runner
-    chef_run = ChefSpec::Runner.new({ :cookbook_path => 'tmp/cookbooks' })
+    chef_run = ChefSpec::SoloRunner.new({ :cookbook_path => 'tmp/cookbooks' })
   end
 end
 

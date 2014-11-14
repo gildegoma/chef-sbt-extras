@@ -2,8 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rake'
 gem 'tailor'
-gem 'chefspec', '~> 3.4.0'
-gem 'foodcritic', '>= 3.0.3'
+gem 'chefspec', '~> 4.1'
+gem 'foodcritic', '>= 3.0'
 
 # allow CI to override the version of Chef for matrix testing
 gem 'chef', (ENV['CHEF_VERSION'] || '>= 11')
