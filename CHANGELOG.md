@@ -1,6 +1,6 @@
 # CHANGELOG for sbt-extras cookbook
 
-## 0.4.0 (not released yet)
+## 0.4.0
 
 * Integrate newer version of paulp/sbt-extras script, which solves following issues:
   - Older launchers are used if the version is declared in `build.properties`
