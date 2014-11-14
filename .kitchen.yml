@@ -66,3 +66,4 @@ suites:
         vagrant:
           sbt:    ['0.13.6', '0.12.4', '0.11.3']
           scala:  ['2.11.4', '2.10.4', '2.9.3']
+      system_wide_defaults: true
