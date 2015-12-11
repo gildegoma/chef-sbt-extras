@@ -1,6 +1,9 @@
 /tmp
-.kitchen/
+/.kitchen
+/.vagrant*
+/.chef*
 Gemfile.lock
 Berksfile.lock
 .kitchen.local.yml
 .rvmrc
+.ruby-*
