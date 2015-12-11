@@ -1,5 +1,9 @@
 # CHANGELOG for sbt-extras cookbook
 
+## v0.4.1 (2015-12-11)
+
+* [GH-33] Update default sbt-extras version to reach repo.typesafe.com
+
 ## v0.4.0 (2014-11-14)
 
 * Integrate newer version of paulp/sbt-extras script, which solves following issues:

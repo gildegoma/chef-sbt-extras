@@ -5,7 +5,7 @@ else # usual base directory on unix systems:
   set['sbt-extras']['user_home_basedir']       = '/home'
 end
 
-default['sbt-extras']['download_url']          = 'https://raw.githubusercontent.com/paulp/sbt-extras/7288880c30939b41168c264cc17d731f09fa8d11/sbt'
+default['sbt-extras']['download_url']          = 'https://raw.githubusercontent.com/paulp/sbt-extras/1203a8bd2f34f7adfa84b6408beb9a14de81c63d/sbt'
 
 default['sbt-extras']['setup_dir']             = '/usr/local/bin'
 default['sbt-extras']['script_name']           = 'sbt'
@@ -38,5 +38,5 @@ default['sbt-extras']['system_wide_defaults']         = false     # if enabled, 
 # see gildegoma/chef-sbt-extras#5 for more details
 #
 # Example:
-# default['sbt-extras']['user_setup']['user1']['sbt'] = %w{ 0.13.6 0.12.4 0.11.3 }
-# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.11.4 2.10.4 2.9.3 }
+# default['sbt-extras']['user_setup']['user1']['sbt'] = %w{ 0.13.9 0.12.4 0.11.3 }
+# default['sbt-extras']['user_setup']['user1']['scala'] = %w{ 2.11.7 2.10.6 2.9.3 }
