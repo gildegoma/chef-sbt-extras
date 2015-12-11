@@ -1,34 +1,33 @@
 ---
-driver_plugin: vagrant
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: latest
 
 platforms:
 
 - name: ubuntu-14.04
-  driver_config:
-#    box: chef/ubuntu-14.04
-    box: ubuntu/trusty64
-    require_chef_omnibus: true
+  driver:
     customize:
-      memory:    1024
+      memory: 1024
   run_list:
     - recipe[apt]
 
 - name: ubuntu-12.04
-  driver_config:
-    box: ubuntu/precise64
-    require_chef_omnibus: true
+  driver:
     customize:
-      memory:    1024
+      memory: 1024
   run_list:
     - recipe[apt]
 
-- name: centos-7.0
-  driver_config:
-    box: chef/centos-7.0
+- name: centos-7.1
+  driver:
     customize:
-      memory:    1024
-  run_list:
-    - recipe[yum]
+      memory: 1024
+    run_list:
+      - recipe[yum]
 
 suites:
 
@@ -64,6 +63,6 @@ suites:
       setup_dir: /usr/bin
       user_setup:
         vagrant:
-          sbt:    ['0.13.6', '0.12.4', '0.11.3']
-          scala:  ['2.11.4', '2.10.4', '2.9.3']
+          sbt:    ['0.13.9', '0.12.4']
+          scala:  ['2.11.7', '2.10.6', '2.9.3']
       system_wide_defaults: true
